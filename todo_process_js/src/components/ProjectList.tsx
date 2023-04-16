@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Grid, Box, Typography } from "@mui/material"; // Importing Container and Grid components from @mui/material package
+import { Stack, Container, Grid, Box, Typography } from "@mui/material"; // Importing Container and Grid components from @mui/material package
 import BoxContainer from "./shared/BoxContainer";
 import CardComponent from "./shared/CardComponent";
 
@@ -11,7 +11,7 @@ const items = [
     imageSrc: process.env.PUBLIC_URL + "/japan.jpg",
   },
   {
-    title: "Project B",
+    title: "런던 여행",
     description:
       "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     imageSrc: "https://images.unsplash.com/photo-1505761671935-60b3a7427bad",
@@ -45,19 +45,24 @@ const ProjectList = () => {
   return (
     <BoxContainer>
       <>
-        <Typography variant="h5" mb={3} mt={1}>
-          Project list
-        </Typography>
-        {/* <Input></Input> */}
+        <Stack
+          direction="row"
+          alignItems={"flex-end"}
+          justifyContent={"space-between"}
+          mb={3}
+        >
+          <Typography variant="h5"> project list</Typography>
+          <div>리스트 편집하기</div>
+        </Stack>
         <Grid container spacing={2}>
           {items.map((item) => (
             <Grid
               item
-              md={6}
+              container
+              md={4}
               sm={6}
               xs={12}
               justifyContent={"center"}
-              container
             >
               <CardComponent
                 title={item.title}

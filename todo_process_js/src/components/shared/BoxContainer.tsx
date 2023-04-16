@@ -1,7 +1,13 @@
 import React from "react";
-import { Box } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 
-const BoxContainer = ({ children }: { children: JSX.Element }) => {
+const BoxContainer = ({
+  title,
+  children,
+}: {
+  title?: string;
+  children: JSX.Element;
+}) => {
   return (
     <Box
       padding={"1rem"}
@@ -11,6 +17,12 @@ const BoxContainer = ({ children }: { children: JSX.Element }) => {
         boxSizing: "border-box",
       }}
     >
+      {title && (
+        <Typography variant="h5" mb={3} mt={1}>
+          {title}
+        </Typography>
+      )}
+
       {children}
     </Box>
   );

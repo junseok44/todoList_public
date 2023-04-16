@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import Progress from "./Progress";
 import styled from "@emotion/styled";
+import { Link } from "react-router-dom";
 
 const StyledCard = styled(Card)({
   maxWidth: 345,
@@ -18,6 +19,10 @@ const StyledCard = styled(Card)({
   },
   cursor: "pointer",
 });
+
+const StyledLink = styled(Link)`
+  all: unset;
+`;
 
 const CardComponent = ({
   title,
@@ -30,21 +35,23 @@ const CardComponent = ({
 }) => {
   return (
     <StyledCard>
-      <CardMedia
-        component="img"
-        alt="green iguana"
-        height="140"
-        image={`${src}`}
-      />
-      <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
-          {title}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {desc}
-        </Typography>
-        <Progress></Progress>
-      </CardContent>
+      <StyledLink to="/project/123">
+        <CardMedia
+          component="img"
+          alt="green iguana"
+          height="140"
+          image={`${src}`}
+        />
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="div">
+            {title}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {desc}
+          </Typography>
+          <Progress></Progress>
+        </CardContent>
+      </StyledLink>
     </StyledCard>
   );
 };
