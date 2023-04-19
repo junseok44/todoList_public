@@ -1,9 +1,12 @@
 import React from "react";
 import BoxContainer from "../../../components/shared/BoxContainer";
 import { Button, List, Stack } from "@mui/material";
-import TodoListItem from "../../../components/TodoListItem";
+import { Step } from "../../../state/Todo";
+import TodoListItem2 from "../../../components/TodoListItem2";
+import { observer } from "mobx-react";
+import StepItem from "../../../components/StepItem";
 
-const TodoDetailList = () => {
+const StepList = ({ list }: { list: Step[] }) => {
   return (
     <BoxContainer>
       <>
@@ -14,12 +17,9 @@ const TodoDetailList = () => {
             bgcolor: "background.paper",
           }}
         >
-          <TodoListItem
-            first="은행에서 환전 신청"
-            second="5-7일 소요 예정"
-          ></TodoListItem>
-          <TodoListItem></TodoListItem>
-          <TodoListItem></TodoListItem>
+          {list.map((step) => {
+            return <StepItem step={step}></StepItem>;
+          })}
         </List>
         <Stack direction="row" justifyContent={"flex-end"}>
           <Button color="error" variant="outlined">
@@ -31,4 +31,4 @@ const TodoDetailList = () => {
   );
 };
 
-export default TodoDetailList;
+export default observer(StepList);

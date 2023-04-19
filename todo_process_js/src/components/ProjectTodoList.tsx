@@ -12,14 +12,24 @@ import Progress from "../components/shared/Progress";
 import List from "@mui/material/List";
 
 import BoxContainer from "./shared/BoxContainer";
-import TodoListItem from "./TodoListItem";
-import TodoListItem_Nested from "./TodoListItem_Nested";
+import TodoListItem from "./TodoListItem2";
+import { toUnicode } from "punycode";
+import { Todo } from "../state/Todo";
+import { observer } from "mobx-react";
 
-const ProjectTodoList = () => {
+const ProjectTodoList = ({
+  list,
+  addTodo,
+  setCurrentTodo,
+}: {
+  list: Todo[];
+  addTodo: (title: string) => void;
+  setCurrentTodo: (id: string) => void;
+}) => {
   return (
     <BoxContainer>
       <>
-        <Input placeholder="할일을 추가하세요.."></Input>
+        <Input placeholder="할일을 추가하세요.." onSubmit={addTodo}></Input>
         <List
           sx={{
             width: "100%",
@@ -29,8 +39,9 @@ const ProjectTodoList = () => {
           component="nav"
           aria-labelledby="nested-list-subheader"
         >
-          <TodoListItem_Nested></TodoListItem_Nested>
-          <TodoListItem></TodoListItem>
+          {list.map((todo) => (
+            <TodoListItem todo={todo} onClick={setCurrentTodo}></TodoListItem>
+          ))}
         </List>
         <Stack direction="row" justifyContent={"flex-end"}>
           <Button color="error" variant="outlined">
@@ -42,4 +53,4 @@ const ProjectTodoList = () => {
   );
 };
 
-export default ProjectTodoList;
+export default observer(ProjectTodoList);

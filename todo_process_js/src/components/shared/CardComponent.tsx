@@ -9,7 +9,7 @@ import {
 import Progress from "./Progress";
 import styled from "@emotion/styled";
 import { Link } from "react-router-dom";
-
+import { observer } from "mobx-react";
 const StyledCard = styled(Card)({
   maxWidth: 345,
   flex: 1,
@@ -31,7 +31,7 @@ const CardComponent = ({
 }: {
   title: string;
   desc: string;
-  src: string;
+  src: string | undefined;
 }) => {
   return (
     <StyledCard>
@@ -56,4 +56,4 @@ const CardComponent = ({
   );
 };
 
-export default CardComponent;
+export default observer(CardComponent);

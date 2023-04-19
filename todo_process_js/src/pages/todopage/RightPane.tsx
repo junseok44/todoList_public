@@ -1,35 +1,30 @@
-import React from "react";
-import {
-  Checkbox,
-  Stack,
-  Grid,
-  Button,
-  Box,
-  MenuItem,
-  Select,
-  TextField,
-  ListItemAvatar,
-  List,
-  ListItem,
-  ListItemText,
-} from "@mui/material";
-import { CircularProgress } from "@mui/joy";
-import ImageIcon from "@mui/icons-material/Image";
-import WorkIcon from "@mui/icons-material/Work";
-import BeachAccessIcon from "@mui/icons-material/BeachAccess";
-import BoxContainer from "../../components/shared/BoxContainer";
 import TodoProgress from "./Rightpane/TodoProgress";
-import TodoInput from "./Rightpane/TodoInput";
-import TodoDetailList from "./Rightpane/TodoDetailList";
+import StepsInput from "./Rightpane/StepInput";
+import StepList from "./Rightpane/StepList";
+import { useCurrentProjectTodos } from "../../state/Todo";
+import { observer } from "mobx-react";
 
 const RightPane = () => {
+  // load current TodoItem.
+  // 여기서 ui를 활용하지 않더라도.
+  const currentTodos = useCurrentProjectTodos();
+
+  if (!currentTodos) return <div>select todos</div>;
   return (
     <>
-      <TodoProgress></TodoProgress>
-      <TodoInput></TodoInput>
-      <TodoDetailList></TodoDetailList>
+      <TodoProgress
+        name={currentTodos.name}
+        completedCount={currentTodos.completedSteps}
+        allStepsCount={currentTodos.allStepsCount}
+        progress={currentTodos.Progress}
+      ></TodoProgress>
+      <StepsInput
+        title={currentTodos.name}
+        addNewStep={currentTodos.addNewStep}
+      ></StepsInput>
+      <StepList list={currentTodos.steps}></StepList>
     </>
   );
 };
 
-export default RightPane;
+export default observer(RightPane);

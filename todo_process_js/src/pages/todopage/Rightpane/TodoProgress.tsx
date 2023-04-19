@@ -2,28 +2,43 @@ import React from "react";
 import BoxContainer from "../../../components/shared/BoxContainer";
 import { Button, Grid, Stack } from "@mui/material";
 import { CircularProgress } from "@mui/joy";
+import { observer } from "mobx-react";
 
-const TodoProgress = () => {
+const TodoProgress = ({
+  name,
+  completedCount,
+  allStepsCount,
+  progress,
+}: {
+  name: string;
+  completedCount: number;
+  allStepsCount: number;
+  progress: number;
+}) => {
   return (
-    <BoxContainer title="환전하기">
+    <BoxContainer title={name}>
       <Grid container spacing={3} justifyContent={"center"}>
         <Grid item>
           <CircularProgress
             determinate
-            value={40}
+            value={progress}
             sx={{
               "--CircularProgress-size": "90px",
               "--CircularProgress-trackThickness": "5px",
               "--CircularProgress-progressThickness": "5px",
             }}
           >
-            <div>1/3</div>
+            <div>
+              {completedCount} / {allStepsCount}{" "}
+            </div>
           </CircularProgress>
         </Grid>
         <Grid item>
           <Stack justifyContent={"space-between"} sx={{ height: "100%" }}>
-            <div>전체 3개 중 1개 완료</div>
-            <div>40%정도가 완료되었어요!!</div>
+            <div>
+              전체 {allStepsCount}개 중 {completedCount}개 완료
+            </div>
+            <div>{progress}% 완료되었어요!!</div>
             <Button variant="contained" size="small">
               전부 완료하기
             </Button>
@@ -34,4 +49,4 @@ const TodoProgress = () => {
   );
 };
 
-export default TodoProgress;
+export default observer(TodoProgress);

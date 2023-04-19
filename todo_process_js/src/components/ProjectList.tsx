@@ -2,7 +2,8 @@ import React from "react";
 import { Stack, Container, Grid, Box, Typography } from "@mui/material"; // Importing Container and Grid components from @mui/material package
 import BoxContainer from "./shared/BoxContainer";
 import CardComponent from "./shared/CardComponent";
-
+import { Project } from "../state/Todo";
+import { observer } from "mobx-react";
 const items = [
   {
     title: "일본여행",
@@ -41,7 +42,7 @@ const items = [
   },
 ];
 
-const ProjectList = () => {
+const ProjectList = ({ list }: { list: Project[] }) => {
   return (
     <BoxContainer>
       <>
@@ -55,7 +56,7 @@ const ProjectList = () => {
           <div>리스트 편집하기</div>
         </Stack>
         <Grid container spacing={2}>
-          {items.map((item) => (
+          {list.map((item) => (
             <Grid
               item
               container
@@ -67,7 +68,7 @@ const ProjectList = () => {
               <CardComponent
                 title={item.title}
                 desc={item.description}
-                src={item.imageSrc}
+                src={item.thumbNailSrc}
               ></CardComponent>
             </Grid>
           ))}
@@ -77,4 +78,4 @@ const ProjectList = () => {
   );
 };
 
-export default ProjectList;
+export default observer(ProjectList);
