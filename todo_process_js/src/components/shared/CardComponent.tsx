@@ -28,10 +28,12 @@ const CardComponent = ({
   title,
   desc,
   src,
+  progress,
 }: {
   title: string;
-  desc: string;
-  src: string | undefined;
+  desc: string | null;
+  src: string | null;
+  progress: number;
 }) => {
   return (
     <StyledCard>
@@ -49,7 +51,7 @@ const CardComponent = ({
           <Typography variant="body2" color="text.secondary">
             {desc}
           </Typography>
-          <Progress></Progress>
+          <Progress progress={progress}></Progress>
         </CardContent>
       </StyledLink>
     </StyledCard>

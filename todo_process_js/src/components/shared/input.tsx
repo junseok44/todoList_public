@@ -8,13 +8,13 @@ const Input = ({
   onSubmit,
 }: {
   placeholder?: string;
-  onSubmit: (title: string) => void;
+  onSubmit: (title: string, desc: string) => void;
 }) => {
   const [inputValue, setInputValue] = useState(""); // Declare state variable inputValue and its setter function setInputValue with initial value of empty string
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent default form submission behavior
-    onSubmit(inputValue);
+    onSubmit(inputValue, "");
     setInputValue(""); // Reset the input value to empty string
   };
 

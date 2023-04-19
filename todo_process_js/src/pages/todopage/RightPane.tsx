@@ -13,16 +13,16 @@ const RightPane = () => {
   return (
     <>
       <TodoProgress
-        name={currentTodos.name}
-        completedCount={currentTodos.completedSteps}
-        allStepsCount={currentTodos.allStepsCount}
+        name={currentTodos.title}
+        completedCount={currentTodos.completedItemCount}
+        allStepsCount={currentTodos.allItemCount}
         progress={currentTodos.Progress}
       ></TodoProgress>
       <StepsInput
-        title={currentTodos.name}
-        addNewStep={currentTodos.addNewStep}
+        title={currentTodos.title}
+        addNewStep={currentTodos.createItem}
       ></StepsInput>
-      <StepList list={currentTodos.steps}></StepList>
+      <StepList list={currentTodos.list}></StepList>
     </>
   );
 };

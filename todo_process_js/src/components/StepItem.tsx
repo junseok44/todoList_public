@@ -14,7 +14,7 @@ const StepItem = ({ step }: { step: Step }) => {
         <ListItemIcon>
           <Checkbox></Checkbox>
         </ListItemIcon>
-        <ListItemText primary={step.name} />
+        <ListItemText primary={step.title} />
       </ListItemButton>
     </div>
   );

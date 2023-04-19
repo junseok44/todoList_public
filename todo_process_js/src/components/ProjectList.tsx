@@ -58,6 +58,7 @@ const ProjectList = ({ list }: { list: Project[] }) => {
         <Grid container spacing={2}>
           {list.map((item) => (
             <Grid
+              key={item.id}
               item
               container
               md={4}
@@ -67,8 +68,9 @@ const ProjectList = ({ list }: { list: Project[] }) => {
             >
               <CardComponent
                 title={item.title}
-                desc={item.description}
+                desc={item.desc}
                 src={item.thumbNailSrc}
+                progress={item.Progress}
               ></CardComponent>
             </Grid>
           ))}

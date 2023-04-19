@@ -23,7 +23,7 @@ const ProjectTodoList = ({
   setCurrentTodo,
 }: {
   list: Todo[];
-  addTodo: (title: string) => void;
+  addTodo: (title: string, desc: string) => void;
   setCurrentTodo: (id: string) => void;
 }) => {
   return (
@@ -40,7 +40,11 @@ const ProjectTodoList = ({
           aria-labelledby="nested-list-subheader"
         >
           {list.map((todo) => (
-            <TodoListItem todo={todo} onClick={setCurrentTodo}></TodoListItem>
+            <TodoListItem
+              key={todo.id}
+              todo={todo}
+              onClick={setCurrentTodo}
+            ></TodoListItem>
           ))}
         </List>
         <Stack direction="row" justifyContent={"flex-end"}>

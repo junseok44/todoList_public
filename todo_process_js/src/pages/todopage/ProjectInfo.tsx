@@ -13,7 +13,7 @@ const ProjectInfo = ({
   title: string;
   allCount: number;
   completedCount: number;
-  thumbNailSrc: string | undefined;
+  thumbNailSrc: string | null;
   progress: number;
 }) => {
   return (
@@ -24,7 +24,7 @@ const ProjectInfo = ({
           alt="green iguana"
           height="140"
           // image={`${process.env.PUBLIC_URL}/japan.jpg`}
-          image={thumbNailSrc}
+          image={thumbNailSrc as string | undefined}
         />
         <Grid container justifyContent={"space-between"} alignItems={"center"}>
           <Typography variant="h5">{title}</Typography>
@@ -35,7 +35,7 @@ const ProjectInfo = ({
             </div>
           </Stack>
         </Grid>
-        <Progress></Progress>
+        <Progress progress={progress}></Progress>
       </Stack>
     </BoxContainer>
   );

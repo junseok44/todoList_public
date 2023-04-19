@@ -7,6 +7,7 @@ import LeftPane from "./LeftPane";
 import ProjectInfo from "./ProjectInfo";
 import { useCurrentProject } from "../../state/Todo";
 import { observer } from "mobx-react";
+import ProjectlistPage from "../ProjectlistPage";
 
 const TodolistPage = () => {
   const Project = useCurrentProject();
@@ -23,15 +24,15 @@ const TodolistPage = () => {
               <Stack spacing={2}>
                 <ProjectInfo
                   title={Project.title}
-                  allCount={Project.allTodosCount}
-                  completedCount={Project.completedTodos}
+                  allCount={Project.allItemCount}
+                  completedCount={Project.completedItemCount}
                   thumbNailSrc={Project.thumbNailSrc}
                   progress={Project.Progress}
                 ></ProjectInfo>
                 <ProjectTodoList
-                  list={Project.Todos}
-                  addTodo={Project.addTodo}
-                  setCurrentTodo={Project.setCurrentTodoId}
+                  list={Project.list}
+                  addTodo={Project.createItem}
+                  setCurrentTodo={Project.setCurrentItemId}
                 ></ProjectTodoList>
               </Stack>
             </Grid>
