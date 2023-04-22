@@ -13,7 +13,10 @@ const ProjectlistPage = () => {
     <Container maxWidth="lg" sx={{ mb: 4, margin: "4rem auto" }}>
       <Grid container spacing={3}>
         <Grid item xs={12} md={8}>
-          <ProjectList list={projectStore.ProjectList}></ProjectList>
+          <ProjectList
+            list={projectStore.ProjectList}
+            setCurrentProject={projectStore.setCurrentProject}
+          ></ProjectList>
         </Grid>
         <Grid item xs={6} md={4}>
           <Stack rowGap={2}>

@@ -4,9 +4,15 @@ import BoxContainer from "./shared/BoxContainer";
 import CardComponent from "./shared/CardComponent";
 import { Project } from "../state/Todo";
 import { observer } from "mobx-react";
+import useImageSrc from "../hook/useImageSrc";
 
-
-const ProjectList = ({ list }: { list: Project[] }) => {
+const ProjectList = ({
+  list,
+  setCurrentProject,
+}: {
+  list: Project[];
+  setCurrentProject: (id: string) => void;
+}) => {
   return (
     <BoxContainer>
       <>
@@ -31,10 +37,13 @@ const ProjectList = ({ list }: { list: Project[] }) => {
               justifyContent={"center"}
             >
               <CardComponent
+                key={item.id}
+                id={item.id}
                 title={item.title}
                 desc={item.desc}
-                src={item.thumbNailSrc}
+                file={item.thumbNailFile}
                 progress={item.Progress}
+                onClick={setCurrentProject}
               ></CardComponent>
             </Grid>
           ))}

@@ -23,12 +23,14 @@ const TodolistPage = () => {
             <Grid item md={4} xs={12}>
               <Stack spacing={2}>
                 <ProjectInfo
+                  key={Project.id}
+                  // id가 없었기 때문에. 안에서 관리되는 state가 유지되고 있었던 것이다.
                   title={Project.title}
                   allCount={Project.allItemCount}
                   completedCount={Project.completedItemCount}
-                  thumbNailSrc={Project.thumbNailSrc}
+                  file={Project.thumbNailFile}
                   progress={Project.Progress}
-                  changeProjectThumbnail={Project.changeThumbnailSrc}
+                  changeProjectThumbnail={Project.changeThumbnail}
                 ></ProjectInfo>
                 <ProjectTodoList
                   list={Project.list}

@@ -10,6 +10,7 @@ import Progress from "./Progress";
 import styled from "@emotion/styled";
 import { Link } from "react-router-dom";
 import { observer } from "mobx-react";
+import useImageSrc from "../../hook/useImageSrc";
 const StyledCard = styled(Card)({
   maxWidth: 345,
   flex: 1,
@@ -27,22 +28,27 @@ const StyledLink = styled(Link)`
 const CardComponent = ({
   title,
   desc,
-  src,
+  file,
   progress,
+  id,
+  onClick,
 }: {
   title: string;
+  id: string;
   desc: string | null;
-  src: string | null;
+  file: Blob | undefined;
   progress: number;
+  onClick: (id: string) => void;
 }) => {
+  const { imageSrc } = useImageSrc(file);
   return (
-    <StyledCard>
+    <StyledCard onClick={() => onClick(id)}>
       <StyledLink to="/project/123">
         <CardMedia
           component="img"
           alt="green iguana"
           height="140"
-          image={`${src}`}
+          image={imageSrc}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">

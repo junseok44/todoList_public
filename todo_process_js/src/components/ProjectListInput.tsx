@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import BoxContainer from "./shared/BoxContainer";
 
 import {
@@ -8,43 +8,40 @@ import {
   TextareaAutosize,
   Button,
 } from "@mui/material";
+import useImageSrc from "../hook/useImageSrc";
 
-// Define the component
-const ProjectListInput = ({
-  onCreateProject,
-}: {
+interface ProjectListInputProps {
   onCreateProject(
     title: string,
     description: string,
-    src: string | undefined
+    file: Blob | undefined
   ): void;
+}
+
+const ProjectListInput: React.FC<ProjectListInputProps> = ({
+  onCreateProject,
 }) => {
   const [inputForm, setInputForm] = useState<{
     title: string;
     description: string;
-    fileUrl: string | undefined;
+    file: Blob | undefined;
   }>({
     title: "",
     description: "",
-    fileUrl: undefined,
+    file: undefined,
   });
+  const { imageSrc } = useImageSrc(inputForm.file);
 
   // Function to handle thumbnail upload
   const handleThumbnailUpload = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    // Get the uploaded file
     const file = event.target.files?.[0];
 
-    // Check if file is valid
     if (file && file.type.startsWith("image/")) {
-      // Create a URL for the uploaded file
-      const url = URL.createObjectURL(file);
-
-      // 문제는 inputForm이 null일수도 있으니까. 그 경우에는
       setInputForm((prevInputForm) => ({
         ...prevInputForm,
-        fileUrl: url,
+        file: file,
       }));
     }
   };
@@ -59,11 +56,11 @@ const ProjectListInput = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!inputForm.title || !inputForm.description) return;
-    onCreateProject(inputForm.title, inputForm.description, inputForm.fileUrl);
+    onCreateProject(inputForm.title, inputForm.description, inputForm.file);
     setInputForm({
       title: "",
       description: "",
-      fileUrl: undefined,
+      file: undefined,
     });
   };
 
@@ -109,9 +106,9 @@ const ProjectListInput = ({
           <input type="file" hidden onChange={handleThumbnailUpload} />
         </Button>
         {/* Preview of the uploaded thumbnail */}
-        {inputForm?.fileUrl && (
+        {imageSrc && (
           <img
-            src={inputForm.fileUrl}
+            src={imageSrc}
             alt="Thumbnail Preview"
             style={{ width: "100%" }}
           />

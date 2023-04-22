@@ -3,31 +3,30 @@ import BoxContainer from "../../components/shared/BoxContainer";
 import { CardMedia, Grid, Stack, Typography } from "@mui/material";
 import Progress from "../../components/shared/Progress";
 import { observer } from "mobx-react";
+import useImageSrc from "../../hook/useImageSrc";
 
 const ProjectInfo = ({
   title,
   allCount,
   completedCount,
-  thumbNailSrc,
-  progress,
+  file,
   changeProjectThumbnail,
+  progress,
 }: {
   title: string;
   allCount: number;
   completedCount: number;
-  thumbNailSrc: string | null;
+  file: Blob | undefined;
   progress: number;
-  changeProjectThumbnail: (src: string) => void;
+  changeProjectThumbnail: (file: Blob) => void;
 }) => {
-  // const [imageFile, setImageFile] = useState<File | null>(null);
-
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
-      // setImageFile(event.target.files[0]);
-      if (thumbNailSrc) URL.revokeObjectURL(thumbNailSrc);
-      changeProjectThumbnail(URL.createObjectURL(event.target.files[0]));
+      changeProjectThumbnail(event.target.files[0]);
     }
   };
+
+  const { imageSrc } = useImageSrc(file);
 
   return (
     <BoxContainer>
@@ -36,12 +35,10 @@ const ProjectInfo = ({
           component="img"
           alt="green iguana"
           height="140"
-          image={thumbNailSrc as string | undefined}
+          image={imageSrc}
           style={{ cursor: "pointer" }}
-          // Add onClick event to trigger file input click
           onClick={() => document.getElementById("imageInput")?.click()}
         />
-        {/* Render hidden file input */}
         <input
           type="file"
           id="imageInput"

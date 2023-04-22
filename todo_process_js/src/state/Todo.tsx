@@ -8,6 +8,7 @@ import {
 } from "mobx";
 import { createContext, useContext } from "react";
 import { v4 } from "uuid";
+import { incodeFile, toBlob } from "../lib/base64Incode";
 
 abstract class StoreItem {
   done: boolean;
@@ -93,15 +94,23 @@ export class ProjectStore {
     this.loadFromStorage();
     autorun(() => {
       localStorage.setItem("ProjectList", JSON.stringify(this.ProjectList));
-      /* this.projectlist안에 있는 project
-      그 project객체의 thumbnail을 base64인코딩해서 저장하고
-      loadFromStorage에서는 base64를 다시 BLOB으로 parse해서.
-      그 Blob으로부터 url을 생성해서. 이미지파일에 저장하고
-      
+    });
+    autorun(async () => {
+      const imageMap = new Map();
 
+      await Promise.all(
+        this.ProjectList.map(async (project) => {
+          if (project.thumbNailFile) {
+            const base64String = await incodeFile(project.thumbNailFile);
+            if (base64String) imageMap.set(project.id, base64String);
+          }
+        })
+      );
 
+      const myMapArray = Array.from(imageMap.entries());
+      const serializedMap = JSON.stringify(myMapArray);
 
-      */
+      localStorage.setItem("projectThumbnail", serializedMap);
     });
     autorun(() => {
       localStorage.setItem(
@@ -116,9 +125,15 @@ export class ProjectStore {
     if (!storedProjects) return;
 
     const parsedList: Project[] = JSON.parse(storedProjects);
+    const serializedMap = localStorage.getItem("projectThumbnail");
+    const myMap = serializedMap
+      ? new Map(JSON.parse(serializedMap))
+      : new Map();
+
     const newArr = parsedList.map((projectLikeObject) => {
-      const { title, desc, thumbNailSrc, list, id } = projectLikeObject;
-      const newProject = new Project(title, desc, thumbNailSrc);
+      const { title, desc, list, id } = projectLikeObject;
+      const blob = myMap.get(id) ? toBlob(myMap.get(id) as string) : undefined;
+      const newProject = new Project(title, desc, blob);
       newProject.id = id;
       newProject.list = list;
       return newProject;
@@ -128,8 +143,6 @@ export class ProjectStore {
     const id = localStorage.getItem("currentProjectId");
     if (!id) return;
     this.currentProjectId = JSON.parse(id);
-    // FIXME 문제를 알았다.. 지금 project는 새롭게 생성된다. 새롭게 로딩되면.
-    // 그래서 과거 id를 기억하고 저장한다고 하더라도. 그게 안되는것이다.
   }
 
   setCurrentProject = (id: string): void => {
@@ -145,9 +158,9 @@ export class ProjectStore {
   createProject = (
     title: string,
     description: string,
-    src: string = `${process.env.PUBLIC_URL}/japan.jpg`
+    file: Blob | undefined
   ): void => {
-    this.ProjectList.push(new Project(title, description, src));
+    this.ProjectList.push(new Project(title, description, file));
   };
 
   deleteProject = (project: Project): void => {
@@ -168,20 +181,20 @@ export class ProjectStore {
 }
 
 export class Project extends Store<Todo> {
-  thumbNailSrc: string;
-  constructor(title: string, desc: string, thumbNailSrc: string) {
+  thumbNailFile: Blob | undefined;
+  constructor(title: string, desc: string, thumbNailFile: Blob | undefined) {
     super(title, desc);
     makeObservable(this, {
-      thumbNailSrc: observable,
+      thumbNailFile: observable,
     });
-    this.thumbNailSrc = thumbNailSrc;
+    this.thumbNailFile = thumbNailFile;
   }
   createNewItem(title: string, desc: string): Todo {
     return new Todo(title, desc);
   }
 
-  changeThumbnailSrc = (src: string) => {
-    this.thumbNailSrc = src;
+  changeThumbnail = (file: Blob) => {
+    this.thumbNailFile = file;
   };
 }
 
