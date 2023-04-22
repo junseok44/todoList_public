@@ -9,11 +9,13 @@ const TodoProgress = ({
   completedCount,
   allStepsCount,
   progress,
+  onClick,
 }: {
   name: string;
   completedCount: number;
   allStepsCount: number;
   progress: number;
+  onClick: () => void;
 }) => {
   return (
     <BoxContainer title={name}>
@@ -39,7 +41,7 @@ const TodoProgress = ({
               전체 {allStepsCount}개 중 {completedCount}개 완료
             </div>
             <div>{progress}% 완료되었어요!!</div>
-            <Button variant="contained" size="small">
+            <Button variant="contained" size="small" onClick={onClick}>
               전부 완료하기
             </Button>
           </Stack>

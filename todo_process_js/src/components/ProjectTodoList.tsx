@@ -1,31 +1,27 @@
 import React, { useState } from "react";
-import {
-  Grid,
-  Typography,
-  Checkbox,
-  CardMedia,
-  Stack,
-  Button,
-} from "@mui/material";
+
 import Input from "../components/shared/input";
-import Progress from "../components/shared/Progress";
 import List from "@mui/material/List";
 
 import BoxContainer from "./shared/BoxContainer";
 import TodoListItem from "./TodoListItem2";
-import { toUnicode } from "punycode";
 import { Todo } from "../state/Todo";
 import { observer } from "mobx-react";
+import EditButton from "./shared/EditButton";
 
 const ProjectTodoList = ({
   list,
   addTodo,
   setCurrentTodo,
+  deleteItem,
 }: {
   list: Todo[];
   addTodo: (title: string, desc: string) => void;
   setCurrentTodo: (id: string) => void;
+  deleteItem: (id: string) => void;
 }) => {
+  const [isEdit, setisEdit] = useState(false);
+
   return (
     <BoxContainer>
       <>
@@ -44,14 +40,12 @@ const ProjectTodoList = ({
               key={todo.id}
               todo={todo}
               onClick={setCurrentTodo}
+              onDelete={deleteItem}
+              isEdit={isEdit}
             ></TodoListItem>
           ))}
         </List>
-        <Stack direction="row" justifyContent={"flex-end"}>
-          <Button color="error" variant="outlined">
-            edit
-          </Button>
-        </Stack>
+        <EditButton isEdit={isEdit} setisEdit={setisEdit}></EditButton>
       </>
     </BoxContainer>
   );

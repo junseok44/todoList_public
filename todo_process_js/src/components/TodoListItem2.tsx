@@ -11,15 +11,19 @@ import List from "@mui/material/List";
 import { Todo } from "../state/Todo";
 import { observer } from "mobx-react";
 import { action } from "mobx";
+import { IconButton } from "@mui/joy";
+import { Delete } from "@mui/icons-material";
 
 const TodoListItem = ({
   todo,
+  isEdit,
   onClick,
-  onCheckboxClick,
+  onDelete,
 }: {
   todo: Todo;
+  isEdit: boolean;
   onClick: (id: string) => void;
-  onCheckboxClick?: () => void;
+  onDelete: (id: string) => void;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -28,7 +32,6 @@ const TodoListItem = ({
   const handleClick = action((e: React.MouseEvent) => {
     e.stopPropagation();
     todo.done = !todo.done;
-    // onCheckboxClick();
   });
   return (
     <div>
@@ -43,15 +46,26 @@ const TodoListItem = ({
           )}
         </ListItemIcon>
         <ListItemText primary={todo.title} onClick={() => setIsOpen(!isOpen)} />
-        {haveNested && isOpen ? <ExpandLess /> : <ExpandMore />}
+        {isEdit ? (
+          <IconButton onClick={() => onDelete(todo.id)}>
+            <Delete></Delete>
+          </IconButton>
+        ) : (
+          haveNested && (isOpen ? <ExpandLess /> : <ExpandMore />)
+        )}
       </ListItemButton>
       {haveNested && (
         <Collapse in={isOpen} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
             {todo.list.map((step) => (
-              <ListItemButton sx={{ pl: 4 }}>
+              <ListItemButton
+                sx={{ pl: 4 }}
+                onClick={() => {
+                  step.done = !step.done;
+                }}
+              >
                 <ListItemIcon>
-                  <Checkbox edge={"start"}></Checkbox>
+                  <Checkbox checked={step.done} edge={"start"}></Checkbox>
                 </ListItemIcon>
                 <ListItemText primary={step.title} />
               </ListItemButton>

@@ -28,11 +28,13 @@ const TodolistPage = () => {
                   completedCount={Project.completedItemCount}
                   thumbNailSrc={Project.thumbNailSrc}
                   progress={Project.Progress}
+                  changeProjectThumbnail={Project.changeThumbnailSrc}
                 ></ProjectInfo>
                 <ProjectTodoList
                   list={Project.list}
                   addTodo={Project.createItem}
                   setCurrentTodo={Project.setCurrentItemId}
+                  deleteItem={Project.deleteItem}
                 ></ProjectTodoList>
               </Stack>
             </Grid>

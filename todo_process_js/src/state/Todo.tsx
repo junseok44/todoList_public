@@ -9,149 +9,6 @@ import {
 import { createContext, useContext } from "react";
 import { v4 } from "uuid";
 
-export class ProjectStore {
-  public ProjectList: Project[];
-  public CurrentProject: Project | null;
-
-  constructor() {
-    makeAutoObservable(this);
-    this.ProjectList = [];
-    this.CurrentProject = null;
-    this.createProject = this.createProject.bind(this);
-    this.setCurrentProject = this.setCurrentProject.bind(this);
-  }
-
-  setCurrentProject(id: string): void {
-    const project = this.ProjectList.find((p) => p.id === id);
-    if (project) {
-      this.CurrentProject = project;
-    }
-  }
-
-  createProject(title: string, description: string, src: string): void {
-    const newProject = new Project(title, description, src);
-    this.ProjectList.push(newProject);
-  }
-
-  deleteProject(project: Project): void {
-    const index = this.ProjectList.indexOf(project);
-    if (index !== -1) {
-      this.ProjectList.splice(index, 1);
-    }
-  }
-
-  updateProject(project: Project, title: string, description: string): void {
-    project.title = title;
-    project.desc = description;
-  }
-}
-
-// Define the Project class
-// export class Project {
-//   public Todos: Todo[]; // Array of Todo objects
-//   public id: string; // Unique identifier for the project
-//   public currentTodoId: string | null; // ID of the currently selected Todo
-
-//   constructor(
-//     public title: string, // Title of the project
-//     public description: string, // Description of the project
-//     public thumbNailSrc:
-//       | string
-//       | undefined = `${process.env.PUBLIC_URL}/japan.jpg` // Thumbnail image source for the project
-//   ) {
-//     makeAutoObservable(this); // Automatically make all properties observable
-//     this.Todos = []; // Initialize the Todos array
-//     this.id = v4(); // Generate a unique ID for the project
-//     this.thumbNailSrc = thumbNailSrc; // Set the thumbnail image source
-//     this.currentTodoId = null; // Initialize the currentTodoId to null
-//     this.setCurrentTodoId = this.setCurrentTodoId.bind(this);
-//   }
-
-//   // Get the currently selected Todo object
-//   get getCurrentTodo(): Todo | undefined {
-//     return this.Todos.find((todo) => todo.id === this.currentTodoId);
-//   }
-
-//   get Progress() {
-//     if (this.completedTodos == 0 || this.allTodosCount == 0) return 0;
-//     return Math.floor((this.completedTodos / this.allTodosCount) * 100);
-//   }
-
-//   // Set the ID of the currently selected Todo
-//   setCurrentTodoId(id: string) {
-//     this.currentTodoId = id;
-//   }
-
-//   // Get the number of completed Todos
-//   get completedTodos(): number {
-//     return this.Todos.filter((todos) => todos.done).length;
-//   }
-
-//   // Get the total number of Todos
-//   get allTodosCount(): number {
-//     return this.Todos.length;
-//   }
-
-//   // Add a new Todo to the Todos array
-//   addTodo = (title: string) => {
-//     this.Todos.push(new Todo(title));
-//   };
-
-//   // Delete a Todo from the Todos array
-//   deleteTodo = (id: string) => {
-//     this.Todos = this.Todos.filter((todo) => todo.id !== id);
-//     // FIXME observable array should be mutate method
-//   };
-// }
-
-// export class Todo {
-//   public id: string;
-//   public done: boolean;
-//   public steps: Step[];
-//   constructor(public name: string) {
-//     makeAutoObservable(this);
-//     this.done = false;
-//     this.steps = [];
-//     this.id = v4();
-//     this.addNewStep = this.addNewStep.bind(this);
-//   }
-
-//   get isDone() {
-//     // 모든 steps의 done이 true일경우. done = true.
-
-//     // this.done = this.steps.forEach(step => step.done ===)
-//     return this.done;
-//   }
-
-//   get Progress() {
-//     if (this.completedSteps == 0 || this.allStepsCount == 0) return 0;
-//     return Math.floor((this.completedSteps / this.allStepsCount) * 100);
-//   }
-
-//   addNewStep(name: string, desc: string, priority: number) {
-//     this.steps.push(new Step(name, desc, priority, false));
-//   }
-
-//   get completedSteps(): number {
-//     return this.steps.filter((steps) => steps.done).length;
-//   }
-
-//   get allStepsCount(): number {
-//     return this.steps.length;
-//   }
-// }
-
-// export class Step {
-//   constructor(
-//     public name: string,
-//     public desc: string,
-//     public priority: number,
-//     public done: boolean
-//   ) {
-//     makeAutoObservable(this);
-//   }
-// }
-
 abstract class StoreItem {
   done: boolean;
   constructor(public id: string) {
@@ -164,7 +21,7 @@ abstract class Store<T extends StoreItem> {
   public list: T[];
   public id: string;
   public currentItemId: string | null;
-  constructor(public title: string, public desc: string | null) {
+  constructor(public title: string, public desc: string) {
     makeObservable(this, {
       title: observable,
       desc: observable,
@@ -187,7 +44,7 @@ abstract class Store<T extends StoreItem> {
     this.currentItemId = null;
   }
 
-  abstract createNewItem(title: string, desc: string): T;
+  abstract createNewItem(title: string, desc: string, priority?: number): T;
 
   setCurrentItemId = (id: string) => {
     this.currentItemId = id;
@@ -211,8 +68,12 @@ abstract class Store<T extends StoreItem> {
     return Math.floor((this.completedItemCount / this.allItemCount) * 100);
   }
 
-  createItem = (title: string, description: string): void => {
-    const newItem = this.createNewItem(title, description);
+  createItem = (
+    title: string,
+    description: string,
+    priority?: number
+  ): void => {
+    const newItem = this.createNewItem(title, description, priority);
     this.list.push(newItem);
   };
 
@@ -222,28 +83,151 @@ abstract class Store<T extends StoreItem> {
   };
 }
 
+export class ProjectStore {
+  ProjectList: Project[] = []; // Array of projects
+  currentProjectId: string | undefined;
+
+  constructor() {
+    makeAutoObservable(this);
+    this.currentProjectId = undefined;
+    this.loadFromStorage();
+    autorun(() => {
+      localStorage.setItem("ProjectList", JSON.stringify(this.ProjectList));
+      /* this.projectlist안에 있는 project
+      그 project객체의 thumbnail을 base64인코딩해서 저장하고
+      loadFromStorage에서는 base64를 다시 BLOB으로 parse해서.
+      그 Blob으로부터 url을 생성해서. 이미지파일에 저장하고
+      
+
+
+
+      */
+    });
+    autorun(() => {
+      localStorage.setItem(
+        "currentProjectId",
+        JSON.stringify(this.currentProjectId)
+      );
+    });
+  }
+
+  loadFromStorage() {
+    const storedProjects = localStorage.getItem("ProjectList");
+    if (!storedProjects) return;
+
+    const parsedList: Project[] = JSON.parse(storedProjects);
+    const newArr = parsedList.map((projectLikeObject) => {
+      const { title, desc, thumbNailSrc, list, id } = projectLikeObject;
+      const newProject = new Project(title, desc, thumbNailSrc);
+      newProject.id = id;
+      newProject.list = list;
+      return newProject;
+    });
+    this.ProjectList = newArr;
+
+    const id = localStorage.getItem("currentProjectId");
+    if (!id) return;
+    this.currentProjectId = JSON.parse(id);
+    // FIXME 문제를 알았다.. 지금 project는 새롭게 생성된다. 새롭게 로딩되면.
+    // 그래서 과거 id를 기억하고 저장한다고 하더라도. 그게 안되는것이다.
+  }
+
+  setCurrentProject = (id: string): void => {
+    this.currentProjectId = id;
+  };
+
+  getCurrentProject = (): Project | undefined => {
+    return this.ProjectList.find(
+      (project) => project.id === this.currentProjectId
+    );
+  };
+
+  createProject = (
+    title: string,
+    description: string,
+    src: string = `${process.env.PUBLIC_URL}/japan.jpg`
+  ): void => {
+    this.ProjectList.push(new Project(title, description, src));
+  };
+
+  deleteProject = (project: Project): void => {
+    const index = this.ProjectList.indexOf(project);
+    if (index !== -1) {
+      this.ProjectList.splice(index, 1);
+    }
+  };
+
+  updateProject = (
+    project: Project,
+    title: string,
+    description: string
+  ): void => {
+    project.title = title;
+    project.desc = description;
+  };
+}
+
 export class Project extends Store<Todo> {
-  thumbNailSrc: string | null;
+  thumbNailSrc: string;
   constructor(title: string, desc: string, thumbNailSrc: string) {
     super(title, desc);
+    makeObservable(this, {
+      thumbNailSrc: observable,
+    });
     this.thumbNailSrc = thumbNailSrc;
   }
   createNewItem(title: string, desc: string): Todo {
     return new Todo(title, desc);
   }
+
+  changeThumbnailSrc = (src: string) => {
+    this.thumbNailSrc = src;
+  };
 }
 
 export class Todo extends Store<Step> {
-  done: boolean;
+  public _done: boolean = false;
   constructor(title: string, desc: string) {
     super(title, desc);
     makeObservable(this, {
-      done: observable,
+      done: computed,
+      _done: observable,
     });
-    this.done = false;
   }
-  createNewItem(title: string): Step {
-    return new Step(title);
+  createNewItem(title: string, desc: string, priority: number): Step {
+    return new Step(title, desc, priority);
+  }
+  // 만약에 list item이 없을경우에는. this.done은 observable인데..
+  // list item이 없을 경우에는 ㅇㄹㅇㄹㄴㅇㄹㅇ
+
+  clearAllSteps = () => {
+    this.list.forEach((step) => (step.done = true));
+  };
+
+  get done() {
+    if (this.list.length == 0) {
+      return this._done;
+    }
+    const checkAllDone = (list: { done: boolean }[]): boolean => {
+      // Check if the list is empty
+      if (list.length === 0) {
+        return false;
+      }
+      // Loop through the list
+      for (let i = 0; i < list.length; i++) {
+        // If any item has done property as false, return false
+        if (!list[i].done) {
+          return false;
+        }
+      }
+      // If all items have done property as true, return true
+      return true;
+    };
+    return checkAllDone(this.list);
+  }
+
+  set done(value: boolean) {
+    this._done = value;
   }
 }
 
@@ -251,15 +235,38 @@ export class Step {
   id: string;
   done: boolean;
   priority: number;
-  constructor(public title: string) {
+  desc: string;
+  constructor(public title: string, desc: string, priority: number) {
+    makeAutoObservable(this);
     this.title = title;
     this.id = v4();
     this.done = false;
-    this.priority = 1;
+    this.priority = priority;
+    this.desc = desc;
   }
+
+  toggleStep = () => {
+    this.done = !this.done;
+  };
 }
 
-const ProjectStoreContext = createContext<null | ProjectStore>(null);
+/*
+이때 project의 구조는
+{
+  method.
+  property.
+  getter
+  setter
+}
+이렇게 되어있는데.
+이 [{Project},{Project}].가 serialize될때. method는 전부 null이 되어버린다.
+그럼 어떻게? Store에서 toJSON을 통해서. 각각의 Project들을 toJson()해야함.
+
+
+
+*/
+
+const ProjectStoreContext = createContext<ProjectStore | null>(null);
 
 export const ProjectStoreProvider = ({
   children,
@@ -273,28 +280,13 @@ export const ProjectStoreProvider = ({
   );
 };
 
-// FIXME 이 부분 리팩토링 가능한지?
-export const useTodoStore = () => {
-  const todoStore = useContext(ProjectStoreContext);
+export const useTodoStore = () => useContext(ProjectStoreContext);
 
-  return todoStore;
-};
+export const useCurrentProject = () =>
+  useContext(ProjectStoreContext)?.getCurrentProject();
 
-export const useCurrentProject = () => {
-  const todoStore = useContext(ProjectStoreContext);
-
-  if (todoStore) {
-    return todoStore.CurrentProject;
-  }
-};
-
-export const useCurrentProjectTodos = () => {
-  const todoStore = useContext(ProjectStoreContext);
-
-  if (todoStore) {
-    return todoStore.CurrentProject?.getCurrentItem();
-  }
-};
+export const useCurrentProjectTodos = (): undefined | Todo => undefined;
+// useContext(ProjectStoreContext)?.CurrentProject?.getCurrentItem();
 
 // store instance를 불러와서.
 

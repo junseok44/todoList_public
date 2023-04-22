@@ -13,16 +13,20 @@ import {
 const ProjectListInput = ({
   onCreateProject,
 }: {
-  onCreateProject(title: string, description: string, src: string | null): void;
+  onCreateProject(
+    title: string,
+    description: string,
+    src: string | undefined
+  ): void;
 }) => {
   const [inputForm, setInputForm] = useState<{
     title: string;
     description: string;
-    fileUrl: string | null;
+    fileUrl: string | undefined;
   }>({
     title: "",
     description: "",
-    fileUrl: null,
+    fileUrl: undefined,
   });
 
   // Function to handle thumbnail upload
@@ -59,7 +63,7 @@ const ProjectListInput = ({
     setInputForm({
       title: "",
       description: "",
-      fileUrl: null,
+      fileUrl: undefined,
     });
   };
 

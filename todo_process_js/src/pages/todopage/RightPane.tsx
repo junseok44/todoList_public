@@ -17,12 +17,16 @@ const RightPane = () => {
         completedCount={currentTodos.completedItemCount}
         allStepsCount={currentTodos.allItemCount}
         progress={currentTodos.Progress}
+        onClick={currentTodos.clearAllSteps}
       ></TodoProgress>
       <StepsInput
         title={currentTodos.title}
         addNewStep={currentTodos.createItem}
       ></StepsInput>
-      <StepList list={currentTodos.list}></StepList>
+      <StepList
+        list={currentTodos.list}
+        deleteItem={currentTodos.deleteItem}
+      ></StepList>
     </>
   );
 };
