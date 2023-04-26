@@ -3,6 +3,7 @@ import StepsInput from "./Rightpane/StepInput";
 import StepList from "./Rightpane/StepList";
 import { observer } from "mobx-react";
 import { useCurrentProjectTodos } from "../../state/ProjectStore";
+import { Stack } from "@mui/material";
 
 const RightPane = () => {
   // load current TodoItem.
@@ -11,7 +12,7 @@ const RightPane = () => {
 
   if (!currentTodos) return <div>select todos</div>;
   return (
-    <>
+    <Stack spacing={2}>
       <TodoProgress
         name={currentTodos.title}
         completedCount={currentTodos.completedItemCount}
@@ -27,7 +28,7 @@ const RightPane = () => {
         list={currentTodos.list}
         deleteItem={currentTodos.deleteItem}
       ></StepList>
-    </>
+    </Stack>
   );
 };
 

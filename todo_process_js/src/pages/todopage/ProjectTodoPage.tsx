@@ -14,10 +14,13 @@ const TodolistPage = () => {
   return (
     <Container sx={{ margin: "4rem auto" }}>
       <Grid container spacing={2}>
-        <LeftPane></LeftPane>
+        <Grid item md={4} sm={6} xs={12}>
+          <LeftPane></LeftPane>
+        </Grid>
+
         {Project ? (
           <>
-            <Grid item md={4} xs={12}>
+            <Grid item md={4} sm={6} xs={12}>
               <Stack spacing={2}>
                 <ProjectInfo
                   key={Project.id}
@@ -39,16 +42,13 @@ const TodolistPage = () => {
                 ></ProjectTodoList>
               </Stack>
             </Grid>
-            <Grid item md={4} xs={12}>
-              <Stack spacing={2}>
-                <RightPane></RightPane>
-              </Stack>
+            <Grid item md={4} sm={6} xs={12}>
+              <RightPane></RightPane>
             </Grid>
           </>
         ) : (
           <div>loading..</div>
         )}
-
         {/* <Xarrow start={start} end={end}></Xarrow> */}
       </Grid>
     </Container>

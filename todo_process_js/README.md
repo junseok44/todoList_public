@@ -19,3 +19,10 @@
 * [ ] 프로젝트 리스트에서 들어가면 그 프로젝트를 띄워주도록 해야함.
 * [ ] 예시 인스턴스를 하나 만들어서 ui적으로 눈에 띄도록.
 * [ ] edit시 순서 변경할 수 있도록. react-beautiful-dnd를 활용해서.
+
+로컬스토리지 저장
+
+class project store (project[])
+class project (todo[])
+class todo (step[])
+class step

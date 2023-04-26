@@ -4,7 +4,7 @@ import { incodeFile, toBlob } from "../lib/base64Incode";
 import { Project } from "./Project";
 import { Todo } from "./Todo";
 
-const parseListLikeObject = <
+const parseListItemFromJson = <
   T extends {
     title: string;
     desc: string;
@@ -73,13 +73,11 @@ export class ProjectStore {
   }
 
   loadFromStorage() {
-    //FIXME 이것도 지금 LOG가 안찍히는데 도대체 왜 작동하는거지?
-
     const storedProjects = localStorage.getItem("ProjectList");
     if (!storedProjects) return;
 
     const parsedList: Project[] = JSON.parse(storedProjects);
-    this.ProjectList = parseListLikeObject(parsedList, Project);
+    this.ProjectList = parseListItemFromJson(parsedList, Project);
 
     const id = localStorage.getItem("currentProjectId");
     if (!id) return;
