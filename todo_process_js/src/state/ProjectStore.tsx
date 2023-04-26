@@ -64,10 +64,9 @@ export abstract class Store<T extends StoreItem> {
       id: observable,
       currentItemId: observable,
       setCurrentItemId: action,
-      // getCurrentItem: action,
       createItem: action,
       createNewItem: action,
-      deleteItem: action,
+      // deleteItem: action,
       Progress: computed,
       allItemCount: computed,
       completedItemCount: computed,
@@ -77,13 +76,21 @@ export abstract class Store<T extends StoreItem> {
     this.list = [];
     this.id = v4();
     this.currentItemId = null;
+    this.setCurrentItemId = this.setCurrentItemId.bind(this);
   }
 
   abstract createNewItem(title: string, desc: string, priority?: number): T;
 
-  setCurrentItemId = (id: string) => {
+  // setCurrentItemId = (id: string) => {
+  //   console.log("hello", id);
+  //   this.currentItemId = id;
+  // };
+
+  setCurrentItemId(id: string) {
+    console.log("id set", id);
+
     this.currentItemId = id;
-  };
+  }
 
   getCurrentItem = (): T | undefined => {
     return this.list.find((item) => item.id === this.currentItemId);
@@ -112,10 +119,12 @@ export abstract class Store<T extends StoreItem> {
     this.list.push(newItem);
   };
 
-  deleteItem = (id: string): void => {
-    const index = this.list.findIndex((item) => item.id === id);
-    this.list.splice(index, 1);
-  };
+  // deleteItem = (id: string): void => {
+  //   console.log("deleted");
+
+  //   const index = this.list.findIndex((item) => item.id === id);
+  //   this.list.splice(index, 1);
+  // };
 }
 
 export class ProjectStore {
@@ -155,11 +164,15 @@ export class ProjectStore {
   }
 
   loadFromStorage() {
+    console.log("load");
+    //FIXME 이것도 지금 LOG가 안찍히는데 도대체 왜 작동하는거지?
+
     const storedProjects = localStorage.getItem("ProjectList");
     if (!storedProjects) return;
 
     const parsedList: Project[] = JSON.parse(storedProjects);
     this.ProjectList = parseListLikeObject(parsedList, Project);
+    console.log(this.ProjectList);
 
     const id = localStorage.getItem("currentProjectId");
     if (!id) return;
@@ -200,20 +213,6 @@ export class ProjectStore {
     project.desc = description;
   };
 }
-
-/*
-이때 project의 구조는
-{
-  method.
-  property.
-  getter
-  setter
-}
-이렇게 되어있는데.
-이 [{Project},{Project}].가 serialize될때. method는 전부 null이 되어버린다.
-그럼 어떻게? Store에서 toJSON을 통해서. 각각의 Project들을 toJson()해야함.
-
-*/
 
 const ProjectStoreContext = createContext<ProjectStore | null>(null);
 

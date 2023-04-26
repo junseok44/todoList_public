@@ -11,8 +11,6 @@ import ProjectlistPage from "../ProjectlistPage";
 
 const TodolistPage = () => {
   const Project = useCurrentProject();
-  // 여기서 projectStore을 불러와서
-  // 그것의 currentProject를 불러오는 경우에는.
 
   return (
     <Container sx={{ margin: "4rem auto" }}>
@@ -35,7 +33,9 @@ const TodolistPage = () => {
                 <ProjectTodoList
                   list={Project.list}
                   addTodo={Project.createItem}
-                  setCurrentTodo={Project.setCurrentItemId}
+                  setCurrentTodo={(id) => {
+                    Project.setCurrentItemId(id);
+                  }}
                   deleteItem={Project.deleteItem}
                 ></ProjectTodoList>
               </Stack>

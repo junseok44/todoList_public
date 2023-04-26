@@ -4,7 +4,6 @@ import BoxContainer from "./shared/BoxContainer";
 import CardComponent from "./shared/CardComponent";
 import { Project } from "../state/Todo";
 import { observer } from "mobx-react";
-import useImageSrc from "../hook/useImageSrc";
 
 const ProjectList = ({
   list,

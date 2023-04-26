@@ -51,7 +51,12 @@ const CardComponent = ({
           image={imageSrc}
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
+          <Typography
+            gutterBottom
+            variant="h5"
+            component="div"
+            style={{ wordBreak: "keep-all" }}
+          >
             {title}
           </Typography>
           <Typography variant="body2" color="text.secondary">

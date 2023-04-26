@@ -33,9 +33,14 @@ const TodoListItem = ({
     e.stopPropagation();
     todo.done = !todo.done;
   });
+
   return (
     <div>
-      <ListItemButton onClick={() => onClick(todo.id)}>
+      <ListItemButton
+        onClick={() => {
+          onClick(todo.id);
+        }}
+      >
         <ListItemIcon>
           {haveNested ? (
             <div>

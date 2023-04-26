@@ -47,22 +47,26 @@ const ProjectInfo = ({
           onChange={handleImageUpload}
         />
 
-        {/* {imageFile && (
-        <img
-          src={URL.createObjectURL(imageFile)}
-          alt="uploaded"
-          height="140"
-        />
-      )} */}
-
-        <Grid container justifyContent={"space-between"} alignItems={"center"}>
-          <Typography variant="h5">{title}</Typography>
-          <Stack alignItems={"flex-end"} rowGap={0.5}>
-            <div>{progress}%</div>
-            <div>
-              {completedCount}/{allCount}개 완료
-            </div>
-          </Stack>
+        <Grid container justifyContent={"space-between"}>
+          <Grid item xs={8}>
+            <Typography
+              variant="h5"
+              style={{
+                wordBreak: "keep-all",
+                width: "100%",
+              }}
+            >
+              {title}
+            </Typography>
+          </Grid>
+          <Grid item xs={4}>
+            <Stack alignItems={"flex-end"} rowGap={0.5}>
+              <div>{progress}%</div>
+              <div>
+                {completedCount}/{allCount}개 완료
+              </div>
+            </Stack>
+          </Grid>
         </Grid>
         <Progress progress={progress}></Progress>
       </Stack>
