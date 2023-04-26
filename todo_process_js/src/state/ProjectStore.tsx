@@ -3,16 +3,13 @@ import { createContext, useContext } from "react";
 import { incodeFile, toBlob } from "../lib/base64Incode";
 import { Project } from "./Project";
 import { Todo } from "./Todo";
+import { Store } from "./Store";
 
+// projectStore.list = project[]
+// project는 todo의 stroe
 const parseListItemFromJson = <
-  T extends {
-    title: string;
-    desc: string;
-    id: string;
-    currentItemId: string | null;
-    list: U;
-  },
-  U
+  T extends Store<Item>,
+  Item extends { id: string; done: boolean }
 >(
   list: T[],
   constructor: new (title: string, desc: string, file?: Blob) => T
@@ -75,9 +72,13 @@ export class ProjectStore {
   loadFromStorage() {
     const storedProjects = localStorage.getItem("ProjectList");
     if (!storedProjects) return;
-
     const parsedList: Project[] = JSON.parse(storedProjects);
-    this.ProjectList = parseListItemFromJson(parsedList, Project);
+    this.ProjectList = parseListItemFromJson(parsedList, Project).map(
+      (project) => {
+        project.list = parseListItemFromJson(project.list, Todo);
+        return project;
+      }
+    );
 
     const id = localStorage.getItem("currentProjectId");
     if (!id) return;
@@ -102,8 +103,8 @@ export class ProjectStore {
     this.ProjectList.push(new Project(title, description, file));
   };
 
-  deleteProject = (project: Project): void => {
-    const index = this.ProjectList.indexOf(project);
+  deleteProject = (id: string): void => {
+    const index = this.ProjectList.findIndex((project) => project.id === id);
     if (index !== -1) {
       this.ProjectList.splice(index, 1);
     }

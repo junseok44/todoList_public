@@ -19,7 +19,12 @@ const BoxContainer = ({
       }}
     >
       {title && (
-        <Typography variant="h5" mb={3} mt={1}>
+        <Typography
+          variant="h5"
+          mb={3}
+          mt={1}
+          style={{ wordBreak: "keep-all" }}
+        >
           {title}
         </Typography>
       )}

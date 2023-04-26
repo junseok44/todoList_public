@@ -49,7 +49,7 @@ const StepsInput = ({
   };
 
   return (
-    <BoxContainer title={`${title}의 새 단계 추가`}>
+    <BoxContainer title={`${title}의 하위항목 추가`}>
       <form onSubmit={handleSubmit}>
         <Stack spacing={1} alignItems={"flex-end"}>
           <TextField

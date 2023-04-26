@@ -54,6 +54,8 @@ const ProjectInfo = ({
               style={{
                 wordBreak: "keep-all",
                 width: "100%",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
               }}
             >
               {title}

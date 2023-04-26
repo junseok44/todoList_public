@@ -14,6 +14,7 @@ import styled from "@emotion/styled";
 import { Link } from "react-router-dom";
 import { observer } from "mobx-react";
 import useImageSrc from "../../hook/useImageSrc";
+import { Check } from "@mui/icons-material";
 const StyledCard = styled(Card)({
   maxWidth: 345,
   flex: 1,
@@ -34,8 +35,11 @@ interface CardComponentProps {
   desc: string | undefined;
   file: Blob | undefined;
   progress: number;
+  isSelected: boolean;
+  isSelectMode: boolean;
   onClick: (id: string) => void;
   onSubmit: (title?: string, desc?: string) => void;
+  onSelected: (id: string) => void;
 }
 
 const CardComponent = ({
@@ -44,6 +48,9 @@ const CardComponent = ({
   desc,
   file,
   progress,
+  isSelected,
+  isSelectMode,
+  onSelected,
   onClick,
   onSubmit,
 }: CardComponentProps) => {
@@ -68,7 +75,30 @@ const CardComponent = ({
   };
 
   return (
-    <StyledCard onClick={() => onClick(id)}>
+    <StyledCard onClick={() => onClick(id)} style={{ position: "relative" }}>
+      {isSelectMode && (
+        <div
+          onClick={(e) => {
+            e.stopPropagation();
+            onSelected(id);
+          }}
+          style={{
+            position: "absolute",
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            top: 0,
+            left: 0,
+            background: "rgba(0,0,0,0.5)",
+          }}
+        >
+          {isSelected && (
+            <Check style={{ color: "white", fontSize: "2rem" }}></Check>
+          )}
+        </div>
+      )}
       <Stack style={{ height: "100%" }}>
         <StyledLink to={`/project/${id}`}>
           <CardMedia
@@ -105,11 +135,19 @@ const CardComponent = ({
                   gutterBottom
                   variant="h5"
                   component="div"
-                  style={{ wordBreak: "keep-all" }}
+                  style={{
+                    wordBreak: "keep-all",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
                 >
                   {title}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  style={{ wordBreak: "keep-all" }}
+                >
                   {desc}
                 </Typography>
               </StyledLink>

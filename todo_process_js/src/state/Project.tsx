@@ -13,7 +13,11 @@ export class Project extends Store<Todo> {
     });
     this.thumbNailFile = thumbNailFile;
   }
+  // createNewItem(title: string, desc: string): Todo {
+  //   return new Todo(title, desc);
+  // }
   createNewItem(title: string, desc: string): Todo {
+    console.log("this is ?");
     return new Todo(title, desc);
   }
 

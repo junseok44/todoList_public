@@ -30,8 +30,24 @@ const LeftPane = () => {
                 <ListItemButton
                   onClick={() => projectStore.setCurrentProject(project.id)}
                 >
-                  <ListItemText primary={project.title} />
-                  <ListItemIcon>
+                  {/* <ListItemText
+                    primary={project.Progress + "%"}
+                    sx={{ width: "max-content" }}
+                  ></ListItemText> */}
+                  <ListItemText>
+                    <div
+                      style={{
+                        width: "90%",
+                        whiteSpace: "nowrap",
+                        textOverflow: "ellipsis",
+                        overflow: "hidden",
+                      }}
+                    >
+                      {project.title}
+                    </div>
+                  </ListItemText>
+                  <ListItemIcon sx={{ display: "flex", alignItems: "center" }}>
+                    <span>{project.Progress + "%"}</span>
                     <ChevronRightIcon></ChevronRightIcon>
                   </ListItemIcon>
                 </ListItemButton>

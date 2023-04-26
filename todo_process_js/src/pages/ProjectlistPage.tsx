@@ -16,6 +16,7 @@ const ProjectlistPage = () => {
           <ProjectList
             list={projectStore.ProjectList}
             setCurrentProject={projectStore.setCurrentProject}
+            deleteProject={projectStore.deleteProject}
           ></ProjectList>
         </Grid>
         <Grid item xs={6} md={4}>
