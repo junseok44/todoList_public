@@ -5,9 +5,8 @@ import ProjectTodoList from "../../components/ProjectTodoList";
 import RightPane from "./RightPane";
 import LeftPane from "./LeftPane";
 import ProjectInfo from "./ProjectInfo";
-import { useCurrentProject } from "../../state/Todo";
 import { observer } from "mobx-react";
-import ProjectlistPage from "../ProjectlistPage";
+import { useCurrentProject } from "../../state/ProjectStore";
 
 const TodolistPage = () => {
   const Project = useCurrentProject();

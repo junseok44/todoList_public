@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Card,
   CardContent,
   CardActions,
   CardMedia,
   Typography,
+  TextField,
+  Stack,
+  Button,
 } from "@mui/material";
 import Progress from "./Progress";
 import styled from "@emotion/styled";
@@ -25,46 +28,106 @@ const StyledLink = styled(Link)`
   all: unset;
 `;
 
-const CardComponent = ({
-  title,
-  desc,
-  file,
-  progress,
-  id,
-  onClick,
-}: {
+interface CardComponentProps {
   title: string;
   id: string;
-  desc: string | null;
+  desc: string | undefined;
   file: Blob | undefined;
   progress: number;
   onClick: (id: string) => void;
-}) => {
+  onSubmit: (title?: string, desc?: string) => void;
+}
+
+const CardComponent = ({
+  title,
+  id,
+  desc,
+  file,
+  progress,
+  onClick,
+  onSubmit,
+}: CardComponentProps) => {
   const { imageSrc } = useImageSrc(file);
+  const [isEditing, setIsEditing] = useState(false); // state to toggle edit mode
+  const [editedTitle, setEditedTitle] = useState(title); // state to store edited title
+  const [editedDesc, setEditedDesc] = useState(desc); // state to store edited description
+
+  const handleEditClick = () => {
+    setIsEditing(!isEditing); // set edit mode to true when edit button is clicked
+  };
+
+  const handleCancelClick = () => {
+    setIsEditing(false); // set edit mode to false when cancel button is clicked
+    setEditedTitle(title); // reset edited title to original title
+    setEditedDesc(desc); // reset edited description to original description
+  };
+
+  const handleSubmitClick = () => {
+    onSubmit(editedTitle, editedDesc); // call onSubmit function with edited title and description
+    setIsEditing(false); // set edit mode to false after submitting
+  };
+
   return (
     <StyledCard onClick={() => onClick(id)}>
-      <StyledLink to="/project/123">
-        <CardMedia
-          component="img"
-          alt="green iguana"
-          height="140"
-          image={imageSrc}
-        />
-        <CardContent>
-          <Typography
-            gutterBottom
-            variant="h5"
-            component="div"
-            style={{ wordBreak: "keep-all" }}
-          >
-            {title}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {desc}
-          </Typography>
-          <Progress progress={progress}></Progress>
+      <Stack style={{ height: "100%" }}>
+        <StyledLink to={`/project/${id}`}>
+          <CardMedia
+            component="img"
+            alt="green iguana"
+            height="140"
+            image={imageSrc}
+          />
+        </StyledLink>
+        <CardContent style={{ flex: 1 }}>
+          {isEditing ? ( // if in edit mode, show textfields for editing
+            <>
+              <TextField
+                label="Title"
+                variant="standard"
+                value={editedTitle}
+                onChange={(e) => setEditedTitle(e.target.value)}
+                fullWidth
+                // margin="normal"
+              />
+              <TextField
+                label="Description"
+                variant="standard"
+                value={editedDesc}
+                onChange={(e) => setEditedDesc(e.target.value)}
+                fullWidth
+                margin="normal"
+              />
+            </>
+          ) : (
+            <>
+              <StyledLink to={`/project/${id}`}>
+                <Typography
+                  gutterBottom
+                  variant="h5"
+                  component="div"
+                  style={{ wordBreak: "keep-all" }}
+                >
+                  {title}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {desc}
+                </Typography>
+              </StyledLink>
+            </>
+          )}
         </CardContent>
-      </StyledLink>
+        <CardActions>
+          {isEditing ? (
+            <>
+              <Button onClick={handleSubmitClick}>완료</Button>
+              <Button onClick={handleCancelClick}>취소하기</Button>
+            </>
+          ) : (
+            <Button onClick={handleEditClick}>편집하기</Button>
+          )}
+        </CardActions>
+        <Progress progress={progress}></Progress>
+      </Stack>
     </StyledCard>
   );
 };

@@ -1,8 +1,8 @@
 import TodoProgress from "./Rightpane/TodoProgress";
 import StepsInput from "./Rightpane/StepInput";
 import StepList from "./Rightpane/StepList";
-import { useCurrentProjectTodos } from "../../state/Todo";
 import { observer } from "mobx-react";
+import { useCurrentProjectTodos } from "../../state/ProjectStore";
 
 const RightPane = () => {
   // load current TodoItem.

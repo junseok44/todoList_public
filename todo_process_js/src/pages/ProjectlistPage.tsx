@@ -2,8 +2,8 @@ import React from "react";
 import { Stack, Container, Grid, Box, Typography } from "@mui/material"; // Importing Container and Grid components from @mui/material package
 import ProjectList from "../components/ProjectList";
 import ProjectListInput from "../components/ProjectListInput";
-import { ProjectStoreProvider, useTodoStore } from "../state/Todo";
 import { observer } from "mobx-react";
+import { useTodoStore } from "../state/ProjectStore";
 
 const ProjectlistPage = () => {
   const projectStore = useTodoStore();

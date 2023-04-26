@@ -1,6 +1,6 @@
 import { action, makeObservable, observable } from "mobx";
 import { Todo } from "./Todo";
-import { Store } from "./ProjectStore";
+import { Store } from "./Store";
 
 export class Project extends Store<Todo> {
   thumbNailFile: Blob | undefined;

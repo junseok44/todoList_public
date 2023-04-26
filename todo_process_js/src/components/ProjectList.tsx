@@ -2,8 +2,8 @@ import React from "react";
 import { Stack, Container, Grid, Box, Typography } from "@mui/material"; // Importing Container and Grid components from @mui/material package
 import BoxContainer from "./shared/BoxContainer";
 import CardComponent from "./shared/CardComponent";
-import { Project } from "../state/Todo";
 import { observer } from "mobx-react";
+import { Project } from "../state/Project";
 
 const ProjectList = ({
   list,
@@ -43,6 +43,7 @@ const ProjectList = ({
                 file={item.thumbNailFile}
                 progress={item.Progress}
                 onClick={setCurrentProject}
+                onSubmit={item.changeData}
               ></CardComponent>
             </Grid>
           ))}

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import BoxContainer from "../../../components/shared/BoxContainer";
 import { Button, List, Stack } from "@mui/material";
-import { Step } from "../../../state/Todo";
 import TodoListItem2 from "../../../components/TodoListItem2";
 import { observer, useStaticRendering } from "mobx-react";
 import StepItem from "../../../components/StepItem";
+import { Step } from "../../../state/Step";
 
 const StepList = ({
   list,

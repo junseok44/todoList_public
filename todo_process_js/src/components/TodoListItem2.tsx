@@ -50,7 +50,11 @@ const TodoListItem = ({
             <Checkbox checked={todo.done} onClick={handleClick}></Checkbox>
           )}
         </ListItemIcon>
-        <ListItemText primary={todo.title} onClick={() => setIsOpen(!isOpen)} />
+        <ListItemText
+          primary={todo.title}
+          onClick={() => setIsOpen(!isOpen)}
+          style={{ wordBreak: "keep-all" }}
+        />
         {isEdit ? (
           <IconButton onClick={() => onDelete(todo.id)}>
             <Delete></Delete>

@@ -1,13 +1,5 @@
-import {
-  action,
-  autorun,
-  computed,
-  makeAutoObservable,
-  makeObservable,
-  observable,
-} from "mobx";
+import { autorun, makeAutoObservable } from "mobx";
 import { createContext, useContext } from "react";
-import { v4 } from "uuid";
 import { incodeFile, toBlob } from "../lib/base64Incode";
 import { Project } from "./Project";
 import { Todo } from "./Todo";
@@ -43,89 +35,6 @@ const parseListLikeObject = <
     return newItem;
   });
 };
-
-abstract class StoreItem {
-  done: boolean;
-  constructor(public id: string) {
-    this.id = v4();
-    this.done = false;
-  }
-}
-
-export abstract class Store<T extends StoreItem> {
-  public list: T[];
-  public id: string;
-  public currentItemId: string | null;
-  constructor(public title: string, public desc: string) {
-    makeObservable(this, {
-      title: observable,
-      desc: observable,
-      list: observable,
-      id: observable,
-      currentItemId: observable,
-      setCurrentItemId: action,
-      createItem: action,
-      createNewItem: action,
-      // deleteItem: action,
-      Progress: computed,
-      allItemCount: computed,
-      completedItemCount: computed,
-    });
-    this.title = title;
-    this.desc = desc;
-    this.list = [];
-    this.id = v4();
-    this.currentItemId = null;
-    this.setCurrentItemId = this.setCurrentItemId.bind(this);
-  }
-
-  abstract createNewItem(title: string, desc: string, priority?: number): T;
-
-  // setCurrentItemId = (id: string) => {
-  //   console.log("hello", id);
-  //   this.currentItemId = id;
-  // };
-
-  setCurrentItemId(id: string) {
-    console.log("id set", id);
-
-    this.currentItemId = id;
-  }
-
-  getCurrentItem = (): T | undefined => {
-    return this.list.find((item) => item.id === this.currentItemId);
-  };
-
-  get completedItemCount(): number {
-    return this.list.filter((item) => item.done).length;
-  }
-
-  // Define a getter called allItemCount with the type of number
-  get allItemCount(): number {
-    return this.list.length;
-  }
-
-  get Progress(): number {
-    if (this.completedItemCount == 0 || this.allItemCount == 0) return 0;
-    return Math.floor((this.completedItemCount / this.allItemCount) * 100);
-  }
-
-  createItem = (
-    title: string,
-    description: string,
-    priority?: number
-  ): void => {
-    const newItem = this.createNewItem(title, description, priority);
-    this.list.push(newItem);
-  };
-
-  // deleteItem = (id: string): void => {
-  //   console.log("deleted");
-
-  //   const index = this.list.findIndex((item) => item.id === id);
-  //   this.list.splice(index, 1);
-  // };
-}
 
 export class ProjectStore {
   ProjectList: Project[] = []; // Array of projects
@@ -164,7 +73,6 @@ export class ProjectStore {
   }
 
   loadFromStorage() {
-    console.log("load");
     //FIXME 이것도 지금 LOG가 안찍히는데 도대체 왜 작동하는거지?
 
     const storedProjects = localStorage.getItem("ProjectList");
@@ -172,7 +80,6 @@ export class ProjectStore {
 
     const parsedList: Project[] = JSON.parse(storedProjects);
     this.ProjectList = parseListLikeObject(parsedList, Project);
-    console.log(this.ProjectList);
 
     const id = localStorage.getItem("currentProjectId");
     if (!id) return;
@@ -235,27 +142,3 @@ export const useCurrentProject = () =>
 
 export const useCurrentProjectTodos = (): undefined | Todo =>
   useContext(ProjectStoreContext)?.getCurrentProject()?.getCurrentItem();
-
-/*
- 이걸 근데 db에 저장한다고 생각하면. 어떻게 해야하냐면.
- ProjectStore. 
- Project.
- Todo.
- Step.
-
- 이렇게 4가지 스키마를 만들어야 한다. 
- db에 메서드는 저장이 안되므로. 필요한 property만 저장해놓고. 불러올때는 새로운 객체를 생성해서 로드해야함.
- 
- 반복해야하는건
-
- projectstore의 리스트(project) db에서 가져옴 -> 새로운 인스턴스 생성 -> 기존 데이터 덧입히기 ->  projectStore에 저장
- project의 리스트(todo)를 파싱해서 project list에다가 집어넣기
- 이렇게 두가지 작업이고
- step의 경우에는 method가 따로 없기 때문에 안해줘도 상관 없다.
- 
- 내가 하고싶은것은 재귀함수를 만들어서
-
- project의 리스트를 넣으면. 그 리스트의 리스트가 있을경우 또 반복작업 -> 또 반복작업. 이런식으로 하고싶은데.
-
-
-*/

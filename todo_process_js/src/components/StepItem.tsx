@@ -5,10 +5,10 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import List from "@mui/material/List";
 import { Checkbox } from "@mui/material";
-import { Step } from "../state/Todo";
 import { observer } from "mobx-react";
 import { Typography } from "@mui/joy";
 import { Delete } from "@mui/icons-material";
+import { Step } from "../state/Step";
 
 const StepItem = ({
   step,

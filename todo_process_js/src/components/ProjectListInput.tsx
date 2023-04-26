@@ -7,6 +7,7 @@ import {
   TextField,
   TextareaAutosize,
   Button,
+  Stack,
 } from "@mui/material";
 import useImageSrc from "../hook/useImageSrc";
 
@@ -97,25 +98,27 @@ const ProjectListInput: React.FC<ProjectListInputProps> = ({
           placeholder="Project Description"
           sx={{ width: "100%" }}
         ></TextField>
-        <Button
-          variant="contained"
-          component="label"
-          sx={{ marginTop: "0.5rem" }}
-        >
-          Upload Thumbnail
-          <input type="file" hidden onChange={handleThumbnailUpload} />
-        </Button>
-        {/* Preview of the uploaded thumbnail */}
+
         {imageSrc && (
           <img
             src={imageSrc}
             alt="Thumbnail Preview"
-            style={{ width: "100%" }}
+            style={{ width: "100%", marginTop: "0.5rem" }}
           />
         )}
-        <Button variant="outlined" type="submit" sx={{ marginTop: "0.5rem" }}>
-          Create a project
-        </Button>
+        <Stack direction="row" columnGap={1}>
+          <Button
+            variant="contained"
+            component="label"
+            sx={{ marginTop: "0.5rem" }}
+          >
+            Upload Thumbnail
+            <input type="file" hidden onChange={handleThumbnailUpload} />
+          </Button>
+          <Button variant="outlined" type="submit" sx={{ marginTop: "0.5rem" }}>
+            Create a project
+          </Button>
+        </Stack>
       </Box>
     </form>
   );
