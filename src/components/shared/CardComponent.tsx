@@ -130,7 +130,7 @@ const CardComponent = ({
             </>
           ) : (
             <>
-              <StyledLink to={`/project/${id}`}>
+              <StyledLink to={`/project/${id}`} style={{ height: "100%" }}>
                 <Typography
                   gutterBottom
                   variant="h5"
