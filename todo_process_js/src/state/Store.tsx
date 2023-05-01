@@ -38,10 +38,6 @@ export abstract class Store<T extends StoreItem> {
 
   abstract createNewItem(title: string, desc: string, priority?: number): T;
 
-  // setCurrentItemId = (id: string) => {
-  //   this.currentItemId = id;
-  // };
-
   setCurrentItemId(id: string) {
     this.currentItemId = id;
   }
