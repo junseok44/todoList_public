@@ -19,6 +19,13 @@ export class Todo extends Store<Step> {
     this.list.forEach((step) => (step.done = true));
   };
 
+  get completedItemCount(): number {
+    if (this.list.length == 0) {
+      return this._done ? 1 : 0;
+    }
+    return this.list.filter((item) => item.done).length;
+  }
+
   get done() {
     if (this.list.length == 0) {
       return this._done;

@@ -52,6 +52,7 @@ export abstract class Store<T extends StoreItem> {
 
   // Define a getter called allItemCount with the type of number
   get allItemCount(): number {
+    if (this.list.length == 0) return 1;
     return this.list.length;
   }
 

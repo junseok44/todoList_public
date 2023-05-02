@@ -31,6 +31,8 @@ const ProjectTodoList = ({
             width: "100%",
             maxWidth: 360,
             bgcolor: "background.paper",
+            maxHeight: "40vh",
+            overflow: "auto",
           }}
           component="nav"
           aria-labelledby="nested-list-subheader"

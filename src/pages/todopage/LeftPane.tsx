@@ -30,10 +30,6 @@ const LeftPane = () => {
                 <ListItemButton
                   onClick={() => projectStore.setCurrentProject(project.id)}
                 >
-                  {/* <ListItemText
-                    primary={project.Progress + "%"}
-                    sx={{ width: "max-content" }}
-                  ></ListItemText> */}
                   <ListItemText>
                     <div
                       style={{

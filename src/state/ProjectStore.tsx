@@ -78,11 +78,7 @@ export class ProjectStore {
     this.ProjectList = parseListItemFromJson(parsedList, Project).map(
       (project) => {
         project.list = project.list.map((todo) => {
-          // 문제를 ..알았따.. getter이기 때문에.
-          // todo에서 가져올 수가 없다. 이미 serialized된 후의 done은.
-          //
           const { title, desc, list, id, currentItemId, _done } = todo;
-
           const newTodo = new Todo(title, desc);
           newTodo.list = list;
           newTodo.done = _done;
