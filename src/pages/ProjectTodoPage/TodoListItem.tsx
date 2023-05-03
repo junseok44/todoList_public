@@ -7,11 +7,11 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import List from "@mui/material/List";
-
-import { Todo } from "../state/Todo";
+import { Todo } from "../../state/Todo";
 import { observer } from "mobx-react";
 import { action } from "mobx";
 import { Delete } from "@mui/icons-material";
+import TodoListItemSub from "./TodoListItem_Sub";
 
 const TodoListItem = ({
   todo,
@@ -25,7 +25,6 @@ const TodoListItem = ({
   onDelete: (id: string) => void;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-
   const haveNested = todo.list.length > 0;
 
   const handleClick = action((e: React.MouseEvent) => {
@@ -66,17 +65,7 @@ const TodoListItem = ({
         <Collapse in={isOpen} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
             {todo.list.map((step) => (
-              <ListItemButton
-                sx={{ pl: 4 }}
-                onClick={() => {
-                  step.done = !step.done;
-                }}
-              >
-                <ListItemIcon>
-                  <Checkbox checked={step.done} edge={"start"}></Checkbox>
-                </ListItemIcon>
-                <ListItemText primary={step.title} />
-              </ListItemButton>
+              <TodoListItemSub key={step.id} step={step}></TodoListItemSub>
             ))}
           </List>
         </Collapse>

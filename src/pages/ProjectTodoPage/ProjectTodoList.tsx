@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 
-import Input from "../components/shared/input";
+import Input from "../../components/input";
 import List from "@mui/material/List";
 
-import BoxContainer from "./shared/BoxContainer";
-import TodoListItem from "./TodoListItem2";
-import { Todo } from "../state/Todo";
+import BoxContainer from "../../components/BoxContainer";
+import TodoListItem from "./TodoListItem";
+import { Todo } from "../../state/Todo";
 import { observer } from "mobx-react";
-import EditButton from "./shared/EditButton";
+import EditButton from "../../components/EditButton";
 
 const ProjectTodoList = ({
   list,

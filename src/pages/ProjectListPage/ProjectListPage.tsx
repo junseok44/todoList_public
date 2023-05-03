@@ -1,9 +1,9 @@
 import React from "react";
 import { Stack, Container, Grid, Box, Typography } from "@mui/material"; // Importing Container and Grid components from @mui/material package
-import ProjectList from "../components/ProjectList";
-import ProjectListInput from "../components/ProjectListInput";
+import ProjectList from "./ProjectList";
+import ProjectListInput from "./ProjectListInput";
 import { observer } from "mobx-react";
-import { useTodoStore } from "../state/ProjectStore";
+import { useTodoStore } from "../../state/ProjectStore";
 
 const ProjectlistPage = () => {
   const projectStore = useTodoStore();
@@ -19,7 +19,7 @@ const ProjectlistPage = () => {
             deleteProject={projectStore.deleteProject}
           ></ProjectList>
         </Grid>
-        <Grid item xs={6} md={4}>
+        <Grid item xs={12} md={4}>
           <Stack rowGap={2}>
             <ProjectListInput
               onCreateProject={projectStore.createProject}

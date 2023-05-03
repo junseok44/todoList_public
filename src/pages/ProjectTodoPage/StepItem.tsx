@@ -8,7 +8,7 @@ import { Checkbox } from "@mui/material";
 import { observer } from "mobx-react";
 import { Typography } from "@mui/joy";
 import { Delete } from "@mui/icons-material";
-import { Step } from "../state/Step";
+import { Step } from "../../state/Step";
 
 const priorityColor = ["#fd79a8", "#81ecec", "#a29bfe"];
 

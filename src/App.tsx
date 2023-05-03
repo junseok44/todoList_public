@@ -5,8 +5,8 @@ import {
   createRoutesFromElements,
   createBrowserRouter,
 } from "react-router-dom";
-import ProjectlistPage from "./pages/ProjectlistPage";
-import ProjectTodoPage from "./pages/todopage/ProjectTodoPage";
+import ProjectlistPage from "./pages/ProjectListPage/ProjectListPage";
+import ProjectTodoPage from "./pages/ProjectTodoPage/ProjectTodoPage";
 import { ProjectStoreProvider } from "./state/ProjectStore";
 
 const AppRouter = createBrowserRouter(

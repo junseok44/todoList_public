@@ -9,7 +9,7 @@ import {
   Stack,
   Button,
 } from "@mui/material";
-import Progress from "./Progress";
+import Progress from "../../components/Progress";
 import styled from "@emotion/styled";
 import { Link } from "react-router-dom";
 import { observer } from "mobx-react";
@@ -42,7 +42,7 @@ interface CardComponentProps {
   onSelected: (id: string) => void;
 }
 
-const CardComponent = ({
+const ProjectCardItem = ({
   title,
   id,
   desc,
@@ -170,4 +170,4 @@ const CardComponent = ({
   );
 };
 
-export default observer(CardComponent);
+export default observer(ProjectCardItem);

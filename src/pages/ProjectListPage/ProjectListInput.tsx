@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import BoxContainer from "./shared/BoxContainer";
+import BoxContainer from "../../components/BoxContainer";
 
 import {
   Box,
@@ -9,7 +9,7 @@ import {
   Button,
   Stack,
 } from "@mui/material";
-import useImageSrc from "../hook/useImageSrc";
+import useImageSrc from "../../hook/useImageSrc";
 
 interface ProjectListInputProps {
   onCreateProject(

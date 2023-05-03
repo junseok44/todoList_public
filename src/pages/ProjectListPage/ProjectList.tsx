@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Stack, Container, Grid, Box, Typography, Button } from "@mui/material"; // Importing Container and Grid components from @mui/material package
-import BoxContainer from "./shared/BoxContainer";
-import CardComponent from "./shared/CardComponent";
+import BoxContainer from "../../components/BoxContainer";
+import CardComponent from "./ProjectCardItem";
 import { observer } from "mobx-react";
-import { Project } from "../state/Project";
+import { Project } from "../../state/Project";
 
 const ProjectList = ({
   list,

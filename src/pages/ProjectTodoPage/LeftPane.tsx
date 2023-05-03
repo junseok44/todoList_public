@@ -10,9 +10,10 @@ import {
 } from "@mui/material";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { Link } from "react-router-dom";
-import BoxContainer from "../../components/shared/BoxContainer";
+import BoxContainer from "../../components/BoxContainer";
 import { observer } from "mobx-react";
 import { useTodoStore } from "../../state/ProjectStore";
+import ProjectList_Item from "./ProjectList_Item";
 
 const LeftPane = () => {
   const projectStore = useTodoStore();
@@ -26,28 +27,11 @@ const LeftPane = () => {
             (
               project // Mapping through the array of items
             ) => (
-              <ListItem key={project.id} disablePadding>
-                <ListItemButton
-                  onClick={() => projectStore.setCurrentProject(project.id)}
-                >
-                  <ListItemText>
-                    <div
-                      style={{
-                        width: "90%",
-                        whiteSpace: "nowrap",
-                        textOverflow: "ellipsis",
-                        overflow: "hidden",
-                      }}
-                    >
-                      {project.title}
-                    </div>
-                  </ListItemText>
-                  <ListItemIcon sx={{ display: "flex", alignItems: "center" }}>
-                    <span>{project.Progress + "%"}</span>
-                    <ChevronRightIcon></ChevronRightIcon>
-                  </ListItemIcon>
-                </ListItemButton>
-              </ListItem>
+              <ProjectList_Item
+                project={project}
+                key={project.id}
+                setCurrentProject={projectStore.setCurrentProject}
+              ></ProjectList_Item>
             )
           )}
         </List>

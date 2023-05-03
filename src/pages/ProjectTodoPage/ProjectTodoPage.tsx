@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { Stack } from "@mui/material"; // Importing necessary components from MUI
 import { Grid, Container } from "@mui/material";
-import ProjectTodoList from "../../components/ProjectTodoList";
+import ProjectTodoList from "./ProjectTodoList";
 import RightPane from "./RightPane";
 import LeftPane from "./LeftPane";
 import ProjectInfo from "./ProjectInfo";

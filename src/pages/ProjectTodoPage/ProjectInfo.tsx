@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import BoxContainer from "../../components/shared/BoxContainer";
+import BoxContainer from "../../components/BoxContainer";
 import { CardMedia, Grid, Stack, Typography } from "@mui/material";
-import Progress from "../../components/shared/Progress";
+import Progress from "../../components/Progress";
 import { observer } from "mobx-react";
 import useImageSrc from "../../hook/useImageSrc";
 

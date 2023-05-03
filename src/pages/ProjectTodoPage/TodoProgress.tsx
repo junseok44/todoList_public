@@ -1,5 +1,5 @@
 import React from "react";
-import BoxContainer from "../../../components/shared/BoxContainer";
+import BoxContainer from "../../components/BoxContainer";
 import { Button, Grid, Stack } from "@mui/material";
 import { CircularProgress } from "@mui/joy";
 import { observer } from "mobx-react";

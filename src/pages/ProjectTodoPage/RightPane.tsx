@@ -1,13 +1,11 @@
-import TodoProgress from "./Rightpane/TodoProgress";
-import StepsInput from "./Rightpane/StepInput";
-import StepList from "./Rightpane/StepList";
+import TodoProgress from "./TodoProgress";
+import StepsInput from "./StepInput";
+import StepList from "./StepList";
 import { observer } from "mobx-react";
 import { useCurrentProjectTodos } from "../../state/ProjectStore";
 import { Stack } from "@mui/material";
 
 const RightPane = () => {
-  // load current TodoItem.
-  // 여기서 ui를 활용하지 않더라도.
   const currentTodos = useCurrentProjectTodos();
 
   if (!currentTodos) return <div>select todos</div>;

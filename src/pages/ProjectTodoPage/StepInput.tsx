@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import BoxContainer from "../../../components/shared/BoxContainer";
+import BoxContainer from "../../components/BoxContainer";
 import {
   Box,
   Button,
