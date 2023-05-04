@@ -15,6 +15,7 @@ import { Link } from "react-router-dom";
 import { observer } from "mobx-react";
 import useImageSrc from "../../hook/useImageSrc";
 import { Check } from "@mui/icons-material";
+
 const StyledCard = styled(Card)({
   maxWidth: 345,
   flex: 1,
@@ -24,6 +25,18 @@ const StyledCard = styled(Card)({
   },
   cursor: "pointer",
 });
+
+const StyledCheckIcon = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.5);
+`;
 
 const StyledLink = styled(Link)`
   all: unset;
@@ -77,27 +90,16 @@ const ProjectCardItem = ({
   return (
     <StyledCard onClick={() => onClick(id)} style={{ position: "relative" }}>
       {isSelectMode && (
-        <div
+        <StyledCheckIcon
           onClick={(e) => {
             e.stopPropagation();
             onSelected(id);
-          }}
-          style={{
-            position: "absolute",
-            width: "100%",
-            height: "100%",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            top: 0,
-            left: 0,
-            background: "rgba(0,0,0,0.5)",
           }}
         >
           {isSelected && (
             <Check style={{ color: "white", fontSize: "2rem" }}></Check>
           )}
-        </div>
+        </StyledCheckIcon>
       )}
       <Stack style={{ height: "100%" }}>
         <StyledLink to={`/project/${id}`}>
@@ -109,7 +111,7 @@ const ProjectCardItem = ({
           />
         </StyledLink>
         <CardContent style={{ flex: 1 }}>
-          {isEditing ? ( // if in edit mode, show textfields for editing
+          {isEditing ? (
             <>
               <TextField
                 label="Title"
@@ -130,7 +132,10 @@ const ProjectCardItem = ({
             </>
           ) : (
             <>
-              <StyledLink to={`/project/${id}`} style={{ height: "100%" }}>
+              <StyledLink
+                to={`/project/${id}`}
+                style={{ height: "100%", display: "block" }}
+              >
                 <Typography
                   gutterBottom
                   variant="h5"
@@ -155,14 +160,24 @@ const ProjectCardItem = ({
           )}
         </CardContent>
         <CardActions>
-          {isEditing ? (
-            <>
-              <Button onClick={handleSubmitClick}>완료</Button>
-              <Button onClick={handleCancelClick}>취소하기</Button>
-            </>
-          ) : (
-            <Button onClick={handleEditClick}>편집하기</Button>
-          )}
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems={"center"}
+            sx={{ width: "100%" }}
+          >
+            {!isEditing && (
+              <Typography variant="button">진척도 {progress}%</Typography>
+            )}
+            {isEditing ? (
+              <div>
+                <Button onClick={handleSubmitClick}>완료</Button>
+                <Button onClick={handleCancelClick}>취소하기</Button>
+              </div>
+            ) : (
+              <Button onClick={handleEditClick}>편집하기</Button>
+            )}
+          </Stack>
         </CardActions>
         <Progress progress={progress}></Progress>
       </Stack>

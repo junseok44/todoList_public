@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import useImageSrc from "../../hook/useImageSrc";
 
-interface ProjectListInputProps {
+interface CreateProjectProps {
   onCreateProject(
     title: string,
     description: string,
@@ -19,9 +19,7 @@ interface ProjectListInputProps {
   ): void;
 }
 
-const ProjectListInput: React.FC<ProjectListInputProps> = ({
-  onCreateProject,
-}) => {
+const CreateProject: React.FC<CreateProjectProps> = ({ onCreateProject }) => {
   const [inputForm, setInputForm] = useState<{
     title: string;
     description: string;
@@ -31,6 +29,9 @@ const ProjectListInput: React.FC<ProjectListInputProps> = ({
     description: "",
     file: undefined,
   });
+
+  const [errMsg, setErrMsg] = useState<string>("");
+
   const { imageSrc } = useImageSrc(inputForm.file);
 
   // Function to handle thumbnail upload
@@ -56,7 +57,15 @@ const ProjectListInput: React.FC<ProjectListInputProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!inputForm.title || !inputForm.description) return;
+    if (errMsg) setErrMsg("");
+    if (!inputForm.title) {
+      setErrMsg("프로젝트 이름을 입력해주세요");
+      return;
+    }
+    if (!inputForm.description) {
+      setErrMsg("프로젝트 설명을 입력해주세요");
+      return;
+    }
     onCreateProject(inputForm.title, inputForm.description, inputForm.file);
     setInputForm({
       title: "",
@@ -79,11 +88,13 @@ const ProjectListInput: React.FC<ProjectListInputProps> = ({
         }}
       >
         <Typography variant="h5">Add Project</Typography>
+        {errMsg && <Typography color="red">{errMsg}</Typography>}
         <TextField
           label="Project Name"
           value={inputForm.title}
           onChange={handleChange}
           variant="outlined"
+          placeholder="프로젝트 제목을 입력"
           margin="normal"
           name="title"
           sx={{ width: "100%" }}
@@ -115,7 +126,12 @@ const ProjectListInput: React.FC<ProjectListInputProps> = ({
             Upload Thumbnail
             <input type="file" hidden onChange={handleThumbnailUpload} />
           </Button>
-          <Button variant="outlined" type="submit" sx={{ marginTop: "0.5rem" }}>
+          <Button
+            data-testid="create-project-button"
+            variant="outlined"
+            type="submit"
+            sx={{ marginTop: "0.5rem" }}
+          >
             Create a project
           </Button>
         </Stack>
@@ -124,4 +140,4 @@ const ProjectListInput: React.FC<ProjectListInputProps> = ({
   );
 };
 
-export default ProjectListInput;
+export default CreateProject;

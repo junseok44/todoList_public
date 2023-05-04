@@ -4,84 +4,67 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { Checkbox } from "@mui/material";
 import { Step } from "../../state/Step";
+import ItemMenuModal from "../../components/ItemMenuModal";
+
 let timer: NodeJS.Timeout | null;
+let clearTimer: NodeJS.Timeout | null;
+
+let inCount: number = 0;
+let outCount: number = 0;
 
 const TodoListItemSub = ({ step }: { step: Step }) => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
 
   const handleMouseOver = (e: React.MouseEvent) => {
-    console.log("mouse over");
+    inCount += 1;
+    console.log("mouse in", inCount);
+    if (clearTimer) clearTimeout(clearTimer);
 
-    if (timer || isModalOpen) return;
     timer = setTimeout(() => {
       setIsModalOpen(true);
+    }, 600);
+  };
+
+  const handleMouseOut = (e: React.MouseEvent) => {
+    outCount += 1;
+    console.log("mouse out", outCount);
+    if (timer) clearTimeout(timer);
+
+    clearTimer = setTimeout(() => {
+      setIsModalOpen(false);
     }, 500);
   };
 
   return (
-    <ListItemButton
-      sx={{ pl: 4, position: "relative" }}
-      onClick={() => {
-        step.done = !step.done;
-      }}
+    <div
+      onMouseOverCapture={handleMouseOver}
+      onMouseOutCapture={handleMouseOut}
+      style={{ zIndex: 100 }}
     >
-      <ListItemIcon>
-        <Checkbox
-          checked={step.done}
-          edge={"start"}
-          onMouseOver={(e) => e.stopPropagation()}
-        ></Checkbox>
-      </ListItemIcon>
-      <ListItemText
-        primary={step.title}
-        // secondary={"현재 진행중"}
-        secondaryTypographyProps={{ style: { color: "red" } }}
-        onMouseOver={handleMouseOver}
-        onMouseOut={() => {
-          console.log("mouse out");
-
-          if (timer) timer = null;
-          setIsModalOpen(false);
+      <ListItemButton
+        sx={{ pl: 4, position: "relative" }}
+        onClick={() => {
+          step.done = !step.done;
         }}
-      />
-      {isModalOpen && (
-        <>
-          <div
-            style={{
-              position: "absolute",
-              bottom: -3,
-              left: 130,
-              transform: "translateX(-50%)",
-              border: "10px solid transparent",
-              borderBottom: "10px solid #b2bec3",
-              transition: "opacity 0.5s ease",
-              opacity: 1,
-            }}
-          ></div>
-          <div
-            style={{
-              position: "absolute",
-              bottom: "calc(-100% + 10px)",
-              left: "50%",
-              transform: "translateX(-50%)",
-              width: "70%",
-              height: "80%",
-              background: "#b2bec3",
-              zIndex: 100,
-              display: "flex",
-              alignItems: "center",
-              padding: "0 1rem",
-              boxSizing: "border-box",
-              borderRadius: "5px",
-              transition: "opacity 0.5s ease",
-              opacity: 1,
-            }}
-          >
-            modal
-          </div>
-        </>
-      )}
-    </ListItemButton>
+      >
+        <ListItemIcon>
+          <Checkbox
+            checked={step.done}
+            edge={"start"}
+            onMouseOver={(e) => e.stopPropagation()}
+          ></Checkbox>
+        </ListItemIcon>
+        <ListItemText
+          primary={step.title}
+          // secondary={"현재 진행중"}
+          secondaryTypographyProps={{ style: { color: "red" } }}
+        />
+        <ItemMenuModal
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+        ></ItemMenuModal>
+      </ListItemButton>
+    </div>
   );
 };
 

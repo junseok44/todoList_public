@@ -1,7 +1,7 @@
 import React from "react";
 import { Stack, Container, Grid, Box, Typography } from "@mui/material"; // Importing Container and Grid components from @mui/material package
-import ProjectList from "./ProjectList";
-import ProjectListInput from "./ProjectListInput";
+import ProjectList from "./ProjectView";
+import ProjectListInput from "./CreateProject";
 import { observer } from "mobx-react";
 import { useTodoStore } from "../../state/ProjectStore";
 
@@ -10,7 +10,7 @@ const ProjectlistPage = () => {
 
   if (!projectStore) return <div>loading...</div>;
   return (
-    <Container maxWidth="lg" sx={{ mb: 4, margin: "4rem auto" }}>
+    <Container maxWidth="xl" sx={{ mb: 4, margin: "4rem auto" }}>
       <Grid container spacing={3}>
         <Grid item xs={12} md={8}>
           <ProjectList

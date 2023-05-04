@@ -5,7 +5,7 @@ import CardComponent from "./ProjectCardItem";
 import { observer } from "mobx-react";
 import { Project } from "../../state/Project";
 
-const ProjectList = ({
+const ProjectView = ({
   list,
   setCurrentProject,
   deleteProject,
@@ -84,4 +84,4 @@ const ProjectList = ({
   );
 };
 
-export default observer(ProjectList);
+export default observer(ProjectView);
