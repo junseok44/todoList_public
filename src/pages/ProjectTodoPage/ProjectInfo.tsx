@@ -35,7 +35,7 @@ const ProjectInfo = ({
           component="img"
           alt="green iguana"
           height="140"
-          image={imageSrc}
+          image={imageSrc || ""}
           style={{ cursor: "pointer" }}
           onClick={() => document.getElementById("imageInput")?.click()}
         />

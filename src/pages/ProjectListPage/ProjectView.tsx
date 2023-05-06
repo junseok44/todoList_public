@@ -4,13 +4,14 @@ import BoxContainer from "../../components/BoxContainer";
 import CardComponent from "./ProjectCardItem";
 import { observer } from "mobx-react";
 import { Project } from "../../state/Project";
+import { useTodoStore } from "../../state/ProjectStore";
 
 const ProjectView = ({
-  list,
+  // list,
   setCurrentProject,
   deleteProject,
 }: {
-  list: Project[];
+  // list: Project[];
   setCurrentProject: (id: string) => void;
   deleteProject: (id: string) => void;
 }) => {
@@ -28,6 +29,20 @@ const ProjectView = ({
   const addToDeleteArr = (id: string) => {
     if (!deleteArr.includes(id)) setDeleteArr((prev) => [...prev, id]);
     else setDeleteArr((prev) => prev.filter((itemId) => itemId != id));
+  };
+
+  const { ProjectList: list } = useTodoStore() || {
+    ProjectList: [
+      {
+        id: "123",
+        list: [],
+        title: "dfdf",
+        desc: "dfsdfdfawef",
+        thumbNailFile: undefined,
+        Progress: 0,
+        changeData: (title, desc) => {},
+      },
+    ],
   };
 
   return (

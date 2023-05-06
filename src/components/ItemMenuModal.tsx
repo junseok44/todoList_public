@@ -3,11 +3,11 @@ import styled from "@emotion/styled";
 import { Button } from "@mui/material";
 const ModalBody = styled.div`
   position: absolute;
-  bottom: calc(-100% + 10px);
+  bottom: -45px;
   left: 50%;
   transform: translateX(-50%);
   width: 90%;
-  height: 80%;
+  height: 3rem;
   background: white;
   z-index: 100;
   display: flex;
@@ -31,10 +31,12 @@ const ModalArrow = styled.div`
 
 const ItemMenuModal = ({
   isModalOpen,
-  setIsModalOpen,
-}: {
+  children,
+}: // setIsModalOpen,
+{
   isModalOpen: boolean;
-  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  children: React.ReactNode;
+  // setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   return (
     <>
@@ -42,9 +44,7 @@ const ItemMenuModal = ({
         <>
           <ModalBody>
             <ModalArrow></ModalArrow>
-            <Button onClick={(e) => e.stopPropagation()}>오늘 할 일</Button>
-            <Button onClick={(e) => e.stopPropagation()}>진행중</Button>
-            <Button onClick={(e) => e.stopPropagation()}>이름 변경</Button>
+            {children}
           </ModalBody>
         </>
       )}

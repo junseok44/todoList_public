@@ -2,70 +2,83 @@ import React from "react";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import { Checkbox } from "@mui/material";
+import { Button, Checkbox, TextField } from "@mui/material";
 import { Step } from "../../state/Step";
 import ItemMenuModal from "../../components/ItemMenuModal";
-
-let timer: NodeJS.Timeout | null;
-let clearTimer: NodeJS.Timeout | null;
-
-let inCount: number = 0;
-let outCount: number = 0;
+import useModal from "../../hook/useModal";
+import { action } from "mobx";
+import { observer } from "mobx-react";
 
 const TodoListItemSub = ({ step }: { step: Step }) => {
-  const [isModalOpen, setIsModalOpen] = React.useState(false);
-
-  const handleMouseOver = (e: React.MouseEvent) => {
-    inCount += 1;
-    console.log("mouse in", inCount);
-    if (clearTimer) clearTimeout(clearTimer);
-
-    timer = setTimeout(() => {
-      setIsModalOpen(true);
-    }, 600);
-  };
-
-  const handleMouseOut = (e: React.MouseEvent) => {
-    outCount += 1;
-    console.log("mouse out", outCount);
-    if (timer) clearTimeout(timer);
-
-    clearTimer = setTimeout(() => {
-      setIsModalOpen(false);
-    }, 500);
-  };
+  const { handleMouseOver, handleMouseOut, isModalOpen } = useModal();
+  const [isEdit, setIsEdit] = React.useState(false);
+  const [editValue, setEditValue] = React.useState(step.title);
 
   return (
-    <div
+    <ListItemButton
+      sx={{ pl: 4, position: "relative" }}
+      onClick={() => {
+        step.done = !step.done;
+      }}
       onMouseOverCapture={handleMouseOver}
-      onMouseOutCapture={handleMouseOut}
-      style={{ zIndex: 100 }}
+      onMouseOut={handleMouseOut}
     >
-      <ListItemButton
-        sx={{ pl: 4, position: "relative" }}
-        onClick={() => {
-          step.done = !step.done;
-        }}
-      >
-        <ListItemIcon>
-          <Checkbox
-            checked={step.done}
-            edge={"start"}
-            onMouseOver={(e) => e.stopPropagation()}
-          ></Checkbox>
-        </ListItemIcon>
+      <ListItemIcon>
+        <Checkbox
+          checked={step.done}
+          edge={"start"}
+          onMouseOver={(e) => e.stopPropagation()}
+        ></Checkbox>
+      </ListItemIcon>
+      {!isEdit ? (
         <ListItemText
           primary={step.title}
-          // secondary={"현재 진행중"}
-          secondaryTypographyProps={{ style: { color: "red" } }}
+          secondary={step.onProgress ? "현재 진행중" : null}
+          secondaryTypographyProps={{ style: { color: "green" } }}
         />
-        <ItemMenuModal
-          isModalOpen={isModalOpen}
-          setIsModalOpen={setIsModalOpen}
-        ></ItemMenuModal>
-      </ListItemButton>
-    </div>
+      ) : (
+        <TextField
+          size="small"
+          value={editValue}
+          onClick={(e) => e.stopPropagation()}
+          onChange={(e) => {
+            setEditValue(e.target.value);
+            step.title = e.target.value;
+          }}
+        ></TextField>
+      )}
+
+      <ItemMenuModal
+        isModalOpen={isModalOpen}
+        // setIsModalOpen={setIsModalOpen}
+      >
+        <Button
+          onClick={(e) => {
+            e.stopPropagation();
+            step.forToday = !step.forToday;
+          }}
+        >
+          오늘 할 일
+        </Button>
+        <Button
+          onClick={action((e: React.MouseEvent) => {
+            e.stopPropagation();
+            step.onProgress = !step.onProgress;
+          })}
+        >
+          {step.onProgress ? "진행 아님" : "진행중"}
+        </Button>
+        <Button
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsEdit(!isEdit);
+          }}
+        >
+          {isEdit ? "저장" : "이름 변경"}
+        </Button>
+      </ItemMenuModal>
+    </ListItemButton>
   );
 };
 
-export default TodoListItemSub;
+export default observer(TodoListItemSub);

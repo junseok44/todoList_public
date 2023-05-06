@@ -88,7 +88,11 @@ const CreateProject: React.FC<CreateProjectProps> = ({ onCreateProject }) => {
         }}
       >
         <Typography variant="h5">Add Project</Typography>
-        {errMsg && <Typography color="red">{errMsg}</Typography>}
+        {errMsg && (
+          <Typography color="red" data-testid="err-msg">
+            {errMsg}
+          </Typography>
+        )}
         <TextField
           label="Project Name"
           value={inputForm.title}
@@ -106,7 +110,7 @@ const CreateProject: React.FC<CreateProjectProps> = ({ onCreateProject }) => {
           rows={3}
           name="description"
           aria-label="Project Description"
-          placeholder="Project Description"
+          placeholder="프로젝트 설명을 입력"
           sx={{ width: "100%" }}
         ></TextField>
 
@@ -124,7 +128,15 @@ const CreateProject: React.FC<CreateProjectProps> = ({ onCreateProject }) => {
             sx={{ marginTop: "0.5rem" }}
           >
             Upload Thumbnail
-            <input type="file" hidden onChange={handleThumbnailUpload} />
+            <label htmlFor="thumbnail-upload" hidden>
+              thumbnail-upload
+            </label>
+            <input
+              id="thumbnail-upload"
+              type="file"
+              hidden
+              onChange={handleThumbnailUpload}
+            />
           </Button>
           <Button
             data-testid="create-project-button"

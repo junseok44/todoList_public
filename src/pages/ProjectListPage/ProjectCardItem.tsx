@@ -107,7 +107,7 @@ const ProjectCardItem = ({
             component="img"
             alt="green iguana"
             height="140"
-            image={imageSrc}
+            image={imageSrc || ""}
           />
         </StyledLink>
         <CardContent style={{ flex: 1 }}>

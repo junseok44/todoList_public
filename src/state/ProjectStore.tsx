@@ -89,6 +89,20 @@ export class ProjectStore {
         return project;
       }
     );
+    if (this.ProjectList.length == 0) {
+      const projectInstance = new Project(
+        "예시 프로젝트",
+        "일본여행을 간다고 생각해보세요!",
+        undefined
+      );
+      const TodoInstance = new Todo("하위 목록을 가진 TODO", "추가합시다.");
+      projectInstance.list.push(TodoInstance);
+      projectInstance.list.push(new Todo("단독 TODO", "아니면"));
+      TodoInstance.list.push(new Step("스크램블 타워", "6시 40분 예약", 1));
+      TodoInstance.list.push(new Step("미야시타 공원", "쇼핑 예약", 2));
+
+      this.ProjectList.push(projectInstance);
+    }
 
     const id = localStorage.getItem("currentProjectId");
     if (!id) return;

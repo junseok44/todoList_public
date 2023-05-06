@@ -6,6 +6,8 @@ export class Step {
   done: boolean;
   priority: number;
   desc: string;
+  forToday: boolean;
+  onProgress: boolean;
   constructor(public title: string, desc: string, priority: number) {
     makeAutoObservable(this);
     this.title = title;
@@ -13,9 +15,7 @@ export class Step {
     this.done = false;
     this.priority = priority;
     this.desc = desc;
+    this.onProgress = false;
+    this.forToday = false;
   }
-
-  toggleStep = () => {
-    this.done = !this.done;
-  };
 }
